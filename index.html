@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhoneLayer Embedded - Native Calling &amp; SMS in 1 Line of Code</title>
-    <meta name="description" content="Upgrade your website's phone experience. Intercept tel: and sms: links and launch the visitor's preferred VoIP provider — app or web — with just one line of code.">
+    <meta name="description" content="Make calling and texting seamless on your site. Intercept tel: and sms: links so visitors route calls and texts to whichever app they already use — app or web — with just one line of code.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
     <style>
@@ -22,6 +22,7 @@
         }
 
         html { scroll-behavior: smooth; background-color: var(--pure-black); }
+        html, body { overflow-x: clip; }
         body { 
             background-color: transparent; 
             color: var(--text-main); 
@@ -129,6 +130,8 @@
             margin: 0 auto;
             backdrop-filter: blur(10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .code-box code {
@@ -273,10 +276,24 @@
         .code-sample { color: #a5b4fc; }
         .code-comment { color: #64748b; }
 
+        pre { overflow-x: auto; }
+
         @media (max-width: 768px) {
-            .hero .title { font-size: 2.5rem; }
-            .hero .subtitle { font-size: 1.15rem; }
+            .section { padding: 4.5rem 1.25rem; }
+            .box.is-standard { padding: 2rem 1.5rem; }
+            .hero { flex-direction: column; justify-content: center; }
+            .hero .hero-body { width: 100%; padding: 6rem 0 4rem; }
+            .hero .title { font-size: 2.6rem; }
+            .hero .subtitle { font-size: 1.15rem; margin: 1rem auto 1.75rem !important; }
+            .code-box { font-size: 0.8rem; padding: 1.1rem 3rem 1.1rem 1rem; }
+            .code-box::before { top: -10px; }
+            .copy-btn { padding: 3px 8px; font-size: 0.72rem; top: 10px; right: 10px; }
+            .hero .buttons .button { min-width: 0; width: 100%; max-width: 340px; margin-left: auto; margin-right: auto; }
+            #pl-reset { white-space: normal; max-width: 100%; height: auto; }
+            pre { white-space: pre-wrap; overflow-x: hidden; }
         }
+
+
     </style>
 </head>
 <body>
@@ -296,10 +313,10 @@
             <div class="container has-text-centered">
                 <div class="tag is-pl is-rounded mb-5">Open Source — Drop-in Call &amp; SMS Script</div>
                 <h1 class="title">
-                    Native calling &amp; texting. <br><span class="has-text-pl">1 line of code.</span>
+                    Calls &amp; texts, <br><span class="has-text-pl">seamless in any app.</span>
                 </h1>
                 <h2 class="subtitle">
-                    Upgrade your website's phone experience. Intercept standard <code>tel:</code> and <code>sms:</code> links and route calls and texts to WhatsApp, Google Voice, Zoom Phone, RingCentral, and more — instead of dead-ending in FaceTime or Windows Phone Link.
+                    Turn every <code>tel:</code> and <code>sms:</code> link on your site into a seamless choice — visitors route calls and texts to the app they already use: WhatsApp, Google Voice, Zoom Phone, RingCentral, Skype, Dialpad, and more. App or web, one line of code, their preference remembered.
                 </h2>
                 
                 <div class="code-box mb-6">
