@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PhoneLayer Embedded — Phone links that behave</title>
+  <meta name="description" content="A zero-dependency drop-in library that upgrades tel: and sms: links on desktop with a styled, brandable provider picker." />
+  <style>
+    :root {
+      --ink: #0b0e12;
+      --ink-2: #10141a;
+      --panel: #141a21;
+      --panel-2: #1a212b;
+      --line: #242d38;
+      --text: #e8edf2;
+      --muted: #8b96a3;
+      --accent: #f2a33c;
+      --accent-2: #ffd08a;
+      --teal: #4fd1c5;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(900px 420px at 15% -10%, rgba(242, 163, 60, .14), transparent 60%),
+        radial-gradient(800px 400px at 90% -5%, rgba(79, 209, 197, .1), transparent 55%),
+        var(--ink);
+      color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    nav {
+      display: flex; align-items: center; gap: 24px;
+      padding: 18px 24px; position: sticky; top: 0; z-index: 10;
+      background: rgba(11, 14, 18, .82); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; letter-spacing: -.01em; }
+    .brand-mark {
+      width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), #d97f1a); color: #1a1206; font-size: 16px;
+    }
+    .brand span b { color: var(--accent); }
+    .nav-links { display: flex; gap: 18px; margin-left: auto; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .version {
+      font-size: 12px; font-weight: 700; color: var(--accent); border: 1px solid rgba(242, 163, 60, .4);
+      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+    }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 84px 24px 72px; }
+    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 56px; } .mock { display: none; } }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--accent);
+      border: 1px solid rgba(242, 163, 60, .35); border-radius: 999px; padding: 5px 12px; margin-bottom: 20px;
+      background: rgba(242, 163, 60, .08);
+    }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.08; margin: 0 0 18px; letter-spacing: -.025em; }
+    h1 em { font-style: normal; color: var(--accent); }
+    .lede { color: var(--muted); font-size: 18px; max-width: 34em; margin: 0 0 30px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; font: inherit; font-weight: 700; cursor: pointer;
+      border-radius: 12px; padding: 12px 22px; border: 1px solid transparent; text-decoration: none !important;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-2), var(--accent)); color: #201503; box-shadow: 0 8px 24px rgba(242, 163, 60, .28); }
+    .btn-ghost { border-color: var(--line); color: var(--text); background: var(--panel); }
+    .btn-ghost:hover { border-color: var(--accent); }
+    .fine { font-size: 13px; color: var(--muted); margin-top: 14px; }
+
+    /* Mock modal (static preview) */
+    .mock {
+      border: 1px solid var(--line); border-radius: 18px; padding: 22px;
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+      position: relative;
+    }
+    .mock::before {
+      content: ""; position: absolute; inset: -40px; z-index: -1;
+      background: radial-gradient(300px 200px at 50% 40%, rgba(242, 163, 60, .18), transparent 70%);
+    }
+    .mock-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; }
+    .mock-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+    .mock-search {
+      width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; margin-bottom: 14px;
+      background: var(--ink-2); color: var(--text); font: inherit; outline: none;
+    }
+    .mock-row {
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid transparent; font-size: 14px; font-weight: 600;
+    }
+    .mock-row.sel { border-color: rgba(242, 163, 60, .5); background: rgba(242, 163, 60, .08); }
+    .mock-badge { margin-left: auto; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; border-radius: 999px; padding: 2px 8px; }
+    .b-app { color: var(--accent); background: rgba(242, 163, 60, .14); }
+    .b-web { color: var(--muted); background: var(--ink-2); }
+    .mock-hint { margin-left: 8px; font-size: 11.5px; color: var(--muted); font-weight: 500; }
+    .mock-note { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+
+    /* Sections */
+    section { padding: 72px 24px; }
+    .sec-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+    .sec-head h2 { font-size: clamp(26px, 3.6vw, 38px); margin: 0 0 10px; letter-spacing: -.02em; }
+    .sec-head p { color: var(--muted); margin: 0; font-size: 16px; }
+    .kicker { color: var(--accent); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+
+    /* Playground */
+    .playground { background: var(--ink-2); border-block: 1px solid var(--line); }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .demo-card {
+      border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .demo-card code { font-size: 12px; color: var(--muted); background: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; overflow-wrap: anywhere; }
+    .demo-card .btn { justify-content: center; width: 100%; }
+    .demo-card .btn-tel { background: var(--panel-2); border-color: var(--line); color: var(--text); }
+    .demo-card .btn-tel:hover { border-color: var(--accent); }
+    .btn-teal { background: linear-gradient(135deg, #7ee8dc, var(--teal)); color: #06231f; box-shadow: 0 8px 24px rgba(79, 209, 197, .22); }
+    .btn-reset { background: transparent; border-color: var(--line); color: var(--muted); font-size: 13px; }
+
+    /* Provider grid */
+    .prov-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .prov-card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel); display: flex; align-items: center; gap: 12px; }
+    .prov-icon { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; font-size: 19px; background: var(--panel-2); border: 1px solid var(--line); flex: none; }
+    .prov-name { font-weight: 700; font-size: 15px; }
+    .prov-meta { font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+    .pill { font-size: 10.5px; font-weight: 800; letter-spacing: .05em; border-radius: 999px; padding: 2px 8px; }
+    .pill-app { color: var(--accent); background: rgba(242, 163, 60, .14); }
+    .pill-web { color: var(--teal); background: rgba(79, 209, 197, .12); }
+    .pill-sms { color: var(--muted); border: 1px solid var(--line); }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .step { border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: var(--panel); position: relative; }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 14px;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent)); color: #201503; margin-bottom: 14px;
+    }
+    .step h3 { margin: 0 0 6px; font-size: 17px; }
+    .step p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+    /* Integration */
+    pre {
+      background: #0d1117; border: 1px solid var(--line); border-radius: 14px; padding: 20px; overflow-x: auto;
+      font: 13.5px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #d7e0ea; margin: 0;
+    }
+    pre .c { color: #64707d; }
+    pre .t { color: #f2a33c; }
+    pre .s { color: #7ee8dc; }
+    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 860px) { .code-grid { grid-template-columns: 1fr; } }
+    .code-cap { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+    footer { border-top: 1px solid var(--line); padding: 34px 24px; color: var(--muted); font-size: 13.5px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="brand"><span class="brand-mark">☎</span><span>Phone<b>Layer</b> Embedded</span></div>
+    <div class="nav-links">
+      <a href="#demo">Demo</a>
+      <a href="#providers">Providers</a>
+      <a href="#integration">Integration</a>
+      <span class="version">v1.0.0</span>
+    </div>
+  </nav>
+
+  <header class="hero wrap">
+    <div>
+      <span class="eyebrow">Zero-dependency · Vanilla JS · Drop-in script tag</span>
+      <h1>Phone links shouldn't open <em>FaceTime.</em></h1>
+      <p class="lede">
+        PhoneLayer Embedded intercepts every <code>tel:</code> and <code>sms:</code> click on desktop and lets
+        your visitors route the call or text to the tool they actually use — WhatsApp, Google Voice, Zoom Phone,
+        Skype and more. App or Web. Remembered or not.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#demo">Try the live demo ↓</a>
+        <a class="btn btn-ghost" href="tel:+15551234567">☎ Call the demo line</a>
+        <a class="btn btn-ghost" href="sms:+15551234567?body=Hi%20PhoneLayer!">✉ Text the demo line</a>
+      </div>
+      <p class="fine">The two buttons above are plain <code>&lt;a href="tel:…"&gt;</code> links — PhoneLayer is already intercepting them.</p>
+    </div>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-title">Call +1 555 123 4567</div>
+      <div class="mock-sub">Route to a call provider — sanitized to +15551234567</div>
+      <div class="mock-search">Search providers…</div>
+      <div class="mock-row"><span>💬</span> WhatsApp <span class="mock-badge b-app">App</span><span class="mock-hint">Launches desktop app</span></div>
+      <div class="mock-row"><span>🌐</span> Google Voice <span class="mock-badge b-web">Web</span><span class="mock-hint">May require sign-in</span></div>
+      <div class="mock-row sel"><span>🟢</span> Zoom Phone <span class="mock-badge b-app">App</span><span class="mock-hint">Launches desktop app</span></div>
+      <div class="mock-row"><span>💬</span> WhatsApp <span class="mock-badge b-web">Web</span><span class="mock-hint">May require sign-in</span></div>
+      <div class="mock-note"><input type="checkbox" checked disabled /> Remember my choice</div>
+    </div>
+  </header>
+
+  <section class="playground" id="demo">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Live playground</div>
+        <h2>Four ways to trigger it</h2>
+        <p>Auto-intercepted links, declarative triggers, per-trigger theming — click every card.</p>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-card">
+          <code>&lt;a href="tel:+15551234567"&gt;Call Support&lt;/a&gt;</code>
+          <a class="btn btn-tel" href="tel:+15551234567">📞 Call Support</a>
+        </div>
+        <div class="demo-card">
+          <code>&lt;a href="sms:+15551234567?body=Need%20help"&gt;Text Support&lt;/a&gt;</code>
+          <a class="btn btn-tel" href="sms:+15551234567?body=Need%20help">✉️ Text Support</a>
+        </div>
+        <div class="demo-card">
+          <code>&lt;button class="phonelayer-trigger" data-phonelayer-to="+15551234567"&gt;…&lt;/button&gt;</code>
+          <button class="btn btn-tel phonelayer-trigger" data-phonelayer-to="+15551234567">🚀 Declarative trigger</button>
+        </div>
+        <div class="demo-card">
+          <code>&lt;button data-phonelayer-to="(555) 123-4567" data-phonelayer-color="#4fd1c5" data-phonelayer-theme="light"&gt;…&lt;/button&gt;</code>
+          <button class="btn btn-teal phonelayer-trigger" data-phonelayer-to="(555) 123-4567" data-phonelayer-color="#4fd1c5" data-phonelayer-theme="light">🎨 Custom-themed trigger</button>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top: 22px;">
+        <button class="btn btn-reset" id="pl-reset">Reset remembered choice (window.PhoneLayer.reset())</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="providers">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Provider matrix</div>
+        <h2>Tier 1 providers, App &amp; Web</h2>
+        <p>App routes launch the native desktop app via OS URI schemes; Web routes open a centered popup so visitors never lose their place.</p>
+      </div>
+      <div class="prov-grid">
+        <div class="prov-card"><div class="prov-icon">📱</div><div><div class="prov-name">OS Default</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">💬</div><div><div class="prov-name">WhatsApp</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-web">Web</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">🌐</div><div><div class="prov-name">Google Voice</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">🟢</div><div><div class="prov-name">Zoom Phone</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">🔵</div><div><div class="prov-name">RingCentral</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">🎧</div><div><div class="prov-name">Dialpad</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">Call</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">🗨️</div><div><div class="prov-name">Skype</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
+        <div class="prov-card"><div class="prov-icon">📨</div><div><div class="prov-name">TextMagic</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">SMS</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--ink-2); border-block: 1px solid var(--line);">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">How it works</div>
+        <h2>Intercept. Choose. Route.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h3>Intercept</h3><p>A single delegated listener captures every click on <code>tel:</code>/<code>sms:</code> links and <code>.phonelayer-trigger</code> elements — no per-link wiring.</p></div>
+        <div class="step"><div class="step-num">2</div><h3>Sanitize &amp; choose</h3><p>Numbers are stripped to digits (leading <code>+</code> kept) before they hit a strict URI handler. Visitors pick from a searchable, themed provider list.</p></div>
+        <div class="step"><div class="step-num">3</div><h3>Route</h3><p>App providers launch via OS URI schemes; Web providers open a centered 600×700 popup. Mobile devices are bypassed entirely — native wins there.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="integration">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Integration</div>
+        <h2>Drop it in. Done.</h2>
+        <p>One script tag before <code>&lt;/body&gt;</code>. Theme via attributes on the script or per trigger.</p>
+      </div>
+      <div class="code-grid">
+        <div>
+          <pre><span class="c">&lt;!-- before &lt;/body&gt; --&gt;</span>
+<span class="t">&lt;script</span> src=<span class="s">"phonelayer.js"</span>
+        data-phonelayer-color=<span class="s">"#f2a33c"</span>
+        data-phonelayer-theme=<span class="s">"dark"</span><span class="t">&gt;</span><span class="t">&lt;/script&gt;</span></pre>
+          <div class="code-cap">Global theme — applies to every modal, including your brand color.</div>
+        </div>
+        <div>
+          <pre><span class="c">&lt;!-- per-trigger override --&gt;</span>
+<span class="t">&lt;button</span> class=<span class="s">"phonelayer-trigger"</span>
+        data-phonelayer-to=<span class="s">"(555) 123-4567"</span>
+        data-phonelayer-color=<span class="s">"#4fd1c5"</span>
+        data-phonelayer-theme=<span class="s">"light"</span><span class="t">&gt;</span>
+  Call Sales
+<span class="t">&lt;/button&gt;</span></pre>
+          <div class="code-cap">Granular overrides — that's the teal button in the playground above.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>PhoneLayer Embedded v1.0.0 — zero-dependency, MIT-style. One global: <code>window.PhoneLayer</code>.</span>
+      <span>Desktop only · Mobile bypasses to native handling</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("pl-reset").addEventListener("click", function () {
+      if (window.PhoneLayer) window.PhoneLayer.reset();
+      var b = this;
+      b.textContent = "Preference cleared ✓";
+      setTimeout(function () { b.textContent = "Reset remembered choice (window.PhoneLayer.reset())"; }, 1600);
+    });
+  </script>
+  <script src="phonelayer.js" data-phonelayer-color="#f2a33c" data-phonelayer-theme="dark"></script>
+</body>
+</html>

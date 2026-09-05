@@ -1,0 +1,17 @@
+{
+  "name": "phonelayer-embedded",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zero-dependency drop-in library that upgrades tel: and sms: links on desktop with a styled provider picker.",
+  "type": "module",
+  "scripts": {
+    "serve": "node server.mjs",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0",
+    "typescript": "^7.0.2"
+  }
+}
