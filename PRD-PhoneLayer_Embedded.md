@@ -99,16 +99,16 @@ This ensures elements like `(555) 123-4567` are compiled to `5551234567`, protec
     - [x] Skype (App)
     - [x] TextMagic (Web)
 
-### Phase 2: Enterprise Core & Telemetry (V1.5) - *Next Up*
-- [ ] Map Microsoft Teams (Requires heavy testing for external PSTN URL parameters).
-- [ ] Map Cisco Webex (`webexteams://` / `ciscotel://`).
-- [ ] Map OpenPhone (Research Web vs App parameter structures).
-- [ ] Map Aircall, 8x8, and GoToConnect.
+### Phase 2: Enterprise Core & Telemetry (V1.5) - *Completed*
+- [x] Map Microsoft Teams (`teams.microsoft.com/l/call/0/0?users=4:+NUM` PSTN deep link).
+- [x] Map Cisco Webex (`webextel:+NUM`).
+- [x] Map OpenPhone (web app route — no public deep-link params).
+- [x] Map Aircall, 8x8, and GoToConnect (web app routes).
 - [ ] Add strict E.164 padding: If a number is exactly 10 digits without a country code, programmatically evaluate and prepend `+1` (USA) or allow dev-configured default country code on the script tag (`data-phonelayer-default-country="US"`).
 - [ ] Write Jest unit tests for the number sanitization regex.
 
-### Phase 3: Niche Giants & Advanced Routing (V2.0)
-- [ ] Map legacy providers (Vonage, Nextiva, Ooma).
-- [ ] Map secure/international messengers (Telegram, Signal, Viber).
+### Phase 3: Niche Giants & Advanced Routing (V2.0) - *Providers mapped (v1.6)*
+- [x] Map legacy providers (Vonage, Nextiva, Ooma) — web app routes (`app.vonage.com`, `app.nextiva.com`, `office.ooma.com`).
+- [x] Map secure/international messengers (Telegram, Signal, Viber) — app routes (`tg://resolve?phone=`, `sgnl://signal.me/#p/`, `viber://chat?number=`).
 - [ ] Build a lightweight hosted config dashboard (Optional): Allow users to generate their script tags visually, mirroring MailLayer's go-to-market strategy.
 - [ ] Package as an NPM module (`npm i @phonelayer/embedded`) for React/Next.js native implementations alongside the CDN script.

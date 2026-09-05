@@ -35,13 +35,14 @@ PhoneLayer supports three interaction paradigms:
         data-phonelayer-theme="light">Call Sales</button>
 ```
 
-## Features (v1.5)
+## Features (v1.6)
 
 - **Auto-interception** of `tel:` / `sms:` links via event delegation.
 - **Declarative triggers** (`.phonelayer-trigger` + `data-phonelayer-to`).
 - **Mobile fallback** — real `tel:`/`sms:` links keep native OS dialing; declarative triggers fall back to `tel:`/`sms:`.
 - **Provider matrix (Tier 1)**: OS Default, WhatsApp (App + Web), Google Voice (Web), Zoom Phone (App), RingCentral (App), Dialpad (Web), Skype (App), TextMagic (Web).
 - **Provider matrix (Tier 2)**: Microsoft Teams (Web — PSTN deep link), Cisco Webex (App — `webextel://`), OpenPhone (Web), Aircall (Web), 8x8 (Web), GoTo Connect (Web).
+- **Provider matrix (Tier 3)**: Vonage (Web), Nextiva (Web), Ooma (Web), Telegram (App — `tg://resolve?phone=`), Signal (App — `sgnl://`), Viber (App — `viber://chat`).
 - **App vs Web routing** — apps launch via OS URI schemes (`window.location.href`); web apps open a centered 600×700 popup (`window.open`).
 - **Web-app warnings** — Web providers are badged `[Web]` and hint that sign-in may be required.
 - **"Remember my choice"** — persists the selected provider per type (`call`/`sms`) in `localStorage`; subsequent clicks route directly.
@@ -76,4 +77,4 @@ This repository intentionally ships zero build tooling and zero runtime dependen
 - Auth-state detection (impossible under browser CORS/sandboxing).
 - Plaintext phone-number scanning (false positives / performance).
 
-See `PRD-PhoneLayer_Embedded.md` for the full roadmap (Remaining V1.5: E.164 country-code padding; V2.0: niche messengers like Telegram/Signal/Viber, NPM package).
+See `PRD-PhoneLayer_Embedded.md` for the full roadmap (Remaining: E.164 country-code padding, config dashboard, NPM package).

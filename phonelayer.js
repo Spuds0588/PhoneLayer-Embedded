@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.5.1
+ * PhoneLayer Embedded v1.6.0
  * Zero-dependency drop-in library that upgrades tel: and sms: links on
  * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
@@ -176,6 +176,60 @@
       types: ["call", "sms"],
       build: function () {
         return "https://app.goto.com";
+      },
+    },
+    {
+      id: "vonage",
+      name: "Vonage",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.vonage.com";
+      },
+    },
+    {
+      id: "nextiva",
+      name: "Nextiva",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.nextiva.com";
+      },
+    },
+    {
+      id: "ooma",
+      name: "Ooma",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://office.ooma.com";
+      },
+    },
+    {
+      id: "telegram",
+      name: "Telegram",
+      kind: "app",
+      types: ["sms"],
+      build: function (n, t, b) {
+        return "tg://resolve?phone=" + n + (t === "sms" && b ? "&text=" + encodeURIComponent(b) : "");
+      },
+    },
+    {
+      id: "signal",
+      name: "Signal",
+      kind: "app",
+      types: ["sms"],
+      build: function (n) {
+        return "sgnl://signal.me/#p/" + n;
+      },
+    },
+    {
+      id: "viber",
+      name: "Viber",
+      kind: "app",
+      types: ["sms"],
+      build: function (n) {
+        return "viber://chat?number=" + n;
       },
     },
   ];
@@ -466,7 +520,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.5.1",
+    version: "1.6.0",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);
