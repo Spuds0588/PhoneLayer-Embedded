@@ -1,5 +1,7 @@
 # PhoneLayer Embedded
 
+> 🌐 **Live demo:** [PhoneLayer Embedded on GitHub Pages](https://spuds0588.github.io/PhoneLayer-Embedded/)
+
 A zero-dependency, drop-in JavaScript library that upgrades the desktop browser experience for telephony (`tel:`) and text messaging (`sms:`) links. Instead of prompting users to open system apps they don't use (FaceTime, Windows Phone Link), PhoneLayer intercepts the click and shows a styled, brandable modal that routes the call or SMS to the user's preferred VoIP provider — native desktop app or web app.
 
 **Desktop only.** PhoneLayer strictly detects mobile user-agents and disables itself, deferring to native OS handling.
