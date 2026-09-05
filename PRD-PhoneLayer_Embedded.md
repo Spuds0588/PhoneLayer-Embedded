@@ -110,5 +110,9 @@ This ensures elements like `(555) 123-4567` are compiled to `5551234567`, protec
 ### Phase 3: Niche Giants & Advanced Routing (V2.0) - *Providers mapped (v1.6)*
 - [x] Map legacy providers (Vonage, Nextiva, Ooma) — web app routes (`app.vonage.com`, `app.nextiva.com`, `office.ooma.com`).
 - [x] Map secure/international messengers (Telegram, Signal, Viber) — app routes (`tg://resolve?phone=`, `sgnl://signal.me/#p/`, `viber://chat?number=`).
+
+### Phase 4: Enterprise CCaaS & SMS Gateways (V1.7) - *Completed*
+- [x] Map enterprise contact centers (Five9, Genesys Cloud, Zoho Voice, JustCall) — web app routes (`app.five9.com`, `apps.mypurecloud.com`, `voice.zoho.com`, `app.justcall.io`).
+- [x] Map SMS gateway portals (Telnyx, Sinch) — web routes (`portal.telnyx.com`, `dashboard.sinch.com`).
 - [ ] Build a lightweight hosted config dashboard (Optional): Allow users to generate their script tags visually, mirroring MailLayer's go-to-market strategy.
 - [ ] Package as an NPM module (`npm i @phonelayer/embedded`) for React/Next.js native implementations alongside the CDN script.

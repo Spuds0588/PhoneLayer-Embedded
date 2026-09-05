@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.6.0
+ * PhoneLayer Embedded v1.7.0
  * Zero-dependency drop-in library that upgrades tel: and sms: links on
  * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
@@ -230,6 +230,60 @@
       types: ["sms"],
       build: function (n) {
         return "viber://chat?number=" + n;
+      },
+    },
+    {
+      id: "five9",
+      name: "Five9",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.five9.com";
+      },
+    },
+    {
+      id: "genesys",
+      name: "Genesys Cloud",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://apps.mypurecloud.com";
+      },
+    },
+    {
+      id: "zoho-voice",
+      name: "Zoho Voice",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://voice.zoho.com";
+      },
+    },
+    {
+      id: "justcall",
+      name: "JustCall",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.justcall.io";
+      },
+    },
+    {
+      id: "telnyx",
+      name: "Telnyx",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://portal.telnyx.com";
+      },
+    },
+    {
+      id: "sinch",
+      name: "Sinch",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://dashboard.sinch.com";
       },
     },
   ];
@@ -520,7 +574,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.6.0",
+    version: "1.7.0",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);
