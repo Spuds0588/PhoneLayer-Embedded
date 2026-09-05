@@ -57,28 +57,17 @@ window.PhoneLayer.reset(); // clear the remembered provider preference
 
 ## Demo
 
-Serve the repo and open `index.html`:
+Live demo hosted on GitHub Pages: **https://spuds0588.github.io/PhoneLayer-Embedded/**
+
+Local preview needs no dependencies — serve the repo with any static file server:
 
 ```sh
-bun install
-bun run serve   # http://localhost:4173
+python3 -m http.server 4173   # http://localhost:4173
 ```
 
-## Testing
+## No build step
 
-Playwright drives Chromium in headless (default) and headed modes:
-
-```sh
-bun run test          # headless chromium
-bun run test:headed   # headed chromium (needs a display or xvfb-run)
-```
-
-Install the browser and OS deps once:
-
-```sh
-bunx playwright install chromium
-bunx playwright install-deps chromium   # system libraries (Linux)
-```
+This repository intentionally ships zero build tooling and zero runtime dependencies. The whole site is static — `index.html` plus `phonelayer.js` — so what you clone is exactly what GitHub Pages serves. (The Playwright/Chromium suite used during development lives outside the repo.)
 
 ## Out of scope (v1)
 
