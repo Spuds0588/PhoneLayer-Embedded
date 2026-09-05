@@ -4,7 +4,7 @@
 
 A zero-dependency, drop-in JavaScript library that upgrades the desktop browser experience for telephony (`tel:`) and text messaging (`sms:`) links. Instead of prompting users to open system apps they don't use (FaceTime, Windows Phone Link), PhoneLayer intercepts the click and shows a styled, brandable modal that routes the call or SMS to the user's preferred VoIP provider — native desktop app or web app.
 
-**Desktop only.** PhoneLayer strictly detects mobile user-agents and disables itself, deferring to native OS handling.
+**Mobile-safe.** On phones, PhoneLayer defers real `tel:`/`sms:` links to the native OS handler — and declarative triggers fall back to `tel:`/`sms:` so they keep working everywhere.
 
 ## Install
 
@@ -39,7 +39,7 @@ PhoneLayer supports three interaction paradigms:
 
 - **Auto-interception** of `tel:` / `sms:` links via event delegation.
 - **Declarative triggers** (`.phonelayer-trigger` + `data-phonelayer-to`).
-- **Mobile bypass** — the library no-ops on mobile user agents.
+- **Mobile fallback** — real `tel:`/`sms:` links keep native OS dialing; declarative triggers fall back to `tel:`/`sms:`.
 - **Provider matrix (Tier 1)**: OS Default, WhatsApp (App + Web), Google Voice (Web), Zoom Phone (App), RingCentral (App), Dialpad (Web), Skype (App), TextMagic (Web).
 - **Provider matrix (Tier 2)**: Microsoft Teams (Web — PSTN deep link), Cisco Webex (App — `webextel://`), OpenPhone (Web), Aircall (Web), 8x8 (Web), GoTo Connect (Web).
 - **App vs Web routing** — apps launch via OS URI schemes (`window.location.href`); web apps open a centered 600×700 popup (`window.open`).

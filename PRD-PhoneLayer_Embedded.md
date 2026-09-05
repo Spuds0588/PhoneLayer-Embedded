@@ -14,7 +14,7 @@ By default, desktop operating systems handle phone links poorly, often prompting
 ### 1.3 Core Features & Requirements
 *   **Automatic Link Interception:** Automatically captures clicks on `<a href="tel:...">` and `<a href="sms:...">`.
 *   **Declarative Triggers:** Supports custom UI elements via `.phonelayer-trigger` and `data-phonelayer-to` attributes.
-*   **Mobile OS Bypass:** Strictly detects mobile user-agents and gracefully disables itself, deferring to the highly optimized native OS handling.
+*   **Mobile OS Handling:** Detects mobile user-agents and defers real `tel:`/`sms:` links to the native OS handler, while declarative triggers fall back to `tel:`/`sms:` so they never dead-end.
 *   **Provider Matrix (App & Web):** Supports routing to Native OS Apps (via custom URI schemes like `zoomphonecall://`) and Web Apps (via HTTPS endpoints like Google Voice).
 *   **Smart Fallbacks & Warnings:** Provides clear UX badging (`[App]` vs `[Web]`) and alerts users that Web Apps may require prior authentication.
 *   **User Preferences (Memory):** Includes a "Remember my choice" checkbox utilizing `localStorage` to bypass the modal on future clicks.

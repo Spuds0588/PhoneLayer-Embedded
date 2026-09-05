@@ -1,16 +1,26 @@
 /*!
- * PhoneLayer Embedded v1.5.0
- * Zero-dependency drop-in library that upgrades tel: and sms: links on desktop.
+ * PhoneLayer Embedded v1.5.1
+ * Zero-dependency drop-in library that upgrades tel: and sms: links on
+ * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
  */
 (function () {
   "use strict";
 
   /* ------------------------------------------------------------------ *
-   * Mobile OS bypass — defer entirely to the native OS handler.        *
+   * Mobile detection — native OS dialing wins on phones. Real tel:/sms: *
+   * links pass through untouched; declarative triggers (no href) are    *
+   * synthesized into tel:/sms: links in onClick.                        *
    * ------------------------------------------------------------------ */
-  if (/Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent)) {
-    return;
+  function isMobile() {
+    try {
+      if (navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean") {
+        return navigator.userAgentData.mobile;
+      }
+    } catch (e) {
+      /* fall through to UA sniffing */
+    }
+    return /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent);
   }
 
   /* ------------------------------------------------------------------ *
@@ -384,7 +394,7 @@
    * Click interception                                                  *
    * ------------------------------------------------------------------ */
   function onClick(e) {
-    var el = e.target.closest('a[href^="tel:"],a[href^="sms:"],.phonelayer-trigger');
+    var el = e.target.closest('a[href^="tel:"],a[href^="sms:"],.phonelayer-trigger,[data-phonelayer-to]');
     if (!el) return;
 
     var raw, type;
@@ -408,6 +418,20 @@
 
     var number = cleanNumber(raw);
     if (!number) return;
+
+    // Mobile: real tel:/sms: links reach the native OS handler untouched;
+    // declarative triggers (no href, or placeholder "#") get a synthesized
+    // tel:/sms: link so they dial instead of doing nothing.
+    if (isMobile()) {
+      var href = el.getAttribute("href");
+      if (href && href !== "#") return;
+      e.preventDefault();
+      window.location.href =
+        type === "sms"
+          ? "sms:" + number + (body ? "?body=" + encodeURIComponent(body) : "")
+          : "tel:" + number;
+      return;
+    }
 
     e.preventDefault();
 
@@ -442,7 +466,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.5.0",
+    version: "1.5.1",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);
