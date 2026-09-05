@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.0.0
+ * PhoneLayer Embedded v1.5.0
  * Zero-dependency drop-in library that upgrades tel: and sms: links on desktop.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
  */
@@ -27,7 +27,7 @@
   var POPUP_H = 700;
 
   /* ------------------------------------------------------------------ *
-   * Provider matrix (Tier 1) — App routes use OS URI schemes,          *
+   * Provider matrix (Tier 1 + Tier 2) — App routes use OS URI schemes, *
    * Web routes open a centered popup.                                   *
    * ------------------------------------------------------------------ */
   var PROVIDERS = [
@@ -112,6 +112,60 @@
       types: ["sms"],
       build: function (n) {
         return "https://my.textmagic.com/online/send-message?phone=" + n;
+      },
+    },
+    {
+      id: "teams",
+      name: "Microsoft Teams",
+      kind: "web",
+      types: ["call"],
+      build: function (n) {
+        return "https://teams.microsoft.com/l/call/0/0?users=4:" + n;
+      },
+    },
+    {
+      id: "webex",
+      name: "Cisco Webex",
+      kind: "app",
+      types: ["call"],
+      build: function (n) {
+        return "webextel:" + n;
+      },
+    },
+    {
+      id: "openphone",
+      name: "OpenPhone",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.openphone.com";
+      },
+    },
+    {
+      id: "aircall",
+      name: "Aircall",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.aircall.io";
+      },
+    },
+    {
+      id: "8x8",
+      name: "8x8",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://work.8x8.com";
+      },
+    },
+    {
+      id: "goto-connect",
+      name: "GoTo Connect",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.goto.com";
       },
     },
   ];
@@ -388,7 +442,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.0.0",
+    version: "1.5.0",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);
