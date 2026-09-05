@@ -199,6 +199,85 @@
             color: var(--primary);
         }
 
+        /* --- Provider Gallery --- */
+        .provider-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .provider-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+
+        .provider-logo .provider-logo-label {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-family: 'Inter', -apple-system, sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 88px;
+        }
+
+        .provider-logo .provider-logo-ico {
+            flex: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .provider-logo .provider-logo-ico svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+            color: var(--text-main);
+        }
+
+        .provider-logo:hover {
+            background: rgba(124, 92, 255, 0.12);
+            border-color: rgba(124, 92, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .provider-logo-ico {
+            flex: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            overflow: hidden;
+        }
+
+        .provider-logo-ico svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
         /* --- Buttons --- */
         .button.is-primary { 
             background: var(--primary); 
@@ -281,6 +360,18 @@
         @media (max-width: 768px) {
             .section { padding: 4.5rem 1.25rem; }
             .box.is-standard { padding: 2rem 1.5rem; }
+            .provider-gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .provider-logo {
+                padding: 10px 10px;
+                font-size: 0.72rem;
+            }
+            .provider-logo .provider-logo-label {
+                max-width: 90px;
+                padding: 3px 6px;
+            }
             .hero { flex-direction: column; justify-content: center; }
             .hero .hero-body { width: 100%; padding: 6rem 0 4rem; }
             .hero .title { font-size: 2.6rem; }
@@ -351,9 +442,109 @@
                 </div>
                 <div class="column is-4">
                     <div class="box is-standard">
-                        <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
-                        <h3 class="title is-4 has-text-white">Provider Choice</h3>
-                        <p class="has-text-white">Choose between OS Default, WhatsApp, Google Voice, Zoom Phone, RingCentral, Microsoft Teams, Cisco Webex, Dialpad, Skype, TextMagic, OpenPhone, Aircall, 8x8, and GoTo Connect — set globally or per link using simple data attributes.</p>
+                        <div class="feature-icon"><i class="fas fa-image"></i></div>
+                        <h3 class="title is-4 has-text-white">Provider Gallery</h3>
+                        <p class="has-text-grey-light is-size-7 mb-4">Every provider PhoneLayer routes to — tap any logo to see the library in action.</p>
+                        <div class="provider-gallery">
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="OS Default — system dialer / messager">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-1 4.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">OS Default</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="WhatsApp — App &amp; Web">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-.5-9h-4l1.833-3.667H8l.167-1.167H10l1.5 3h1.667l.167-1h1.333l-1.833 3.667zm3.5 9a7.5 7.5 0 0 1-6.5-5.167 7.5 7.5 0 1 1 6.5 5.167z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">WhatsApp</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Google Voice — Web calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm3.5 8.5a7.5 7.5 0 1 1-7-7 7.5 7.5 0 0 1 7 7z"/><path d="M8.5 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm3.5-.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Google Voice</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Zoom Phone — App calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-3.5-5.833a2.667 2.667 0 0 1 5.334 0 2.667 2.667 0 0 1-5.334 0z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Zoom Phone</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="RingCentral — App calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-13a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/><path d="M7.5 10h5v1h-5z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">RingCentral</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Microsoft Teams — Web PSTN calls">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><path d="M7 7h6v1h-6zm0 3h6v1h-6zm0 3h4v1h-4zm-4 4h6v-1H6v1z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Teams</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Cisco Webex — App calls">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><path d="M10 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM8.5 8.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm4 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Webex</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Dialpad — Web calls">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M20 16.933v-3.6a2 2 0 0 0-.5-1.4L16 8.234a2 2 0 0 0-.87-1A12 12 0 0 0 12 4a10.5 10.5 0 0 0-6-1c-3.87 0-7 2.04-7 4.933a8 8 0 0 0-.59 2.87 12 12 0 0 0 3.84 7.954c.35.08.7.15 1.07.15a12 12 0 0 0 7.77-3.49 9.5 9.5 0 0 0 1.04-1.89 9 9 0 0 1-.56-3.07z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Dialpad</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Skype — App calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.968 3.617-8.992 8-9.833V8.667c-4.383.841-8 4.865-8 9.833 0 4.418 3.582 8 8 8zm0-13a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Skype</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="TextMagic — Web SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.967 3.617-8.993 8-9.833V8.667c-4.383.84-8 4.866-8 9.833 0 4.418 3.582 8 8 8z"/><path d="M9.5 10a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">TextMagic</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="OpenPhone — Web calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.967 3.617-8.993 8-9.833V8.667c-4.383.84-8 4.866-8 9.833 0 4.418 3.582 8 8 8z"/><path d="M7.5 10a2.5 2.5 0 0 1 5 0z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">OpenPhone</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="Aircall — Web calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.967 3.617-8.993 8-9.833V8.667c-4.383.84-8 4.866-8 9.833 0 4.418 3.582 8 8 8z"/><path d="M7 10.2a.7.7 0 1 1-.3.7.7.7 0 0 1 .3-.7zm6 0a.7.7 0 1 1-.3.7.7.7 0 0 1 .3-.7z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">Aircall</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="8x8 — Web calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.967 3.617-8.993 8-9.833V8.667c-4.383.84-8 4.866-8 9.833 0 4.418 3.582 8 8 8z"/><path d="M5 10h10v1H5z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">8x8</span>
+                            </a>
+                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
+                               title="GoTo Connect — Web calls &amp; SMS">
+                                <span class="provider-logo-ico">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 0c5.523 0 10 4.477 10 10S15.523 20 10 20 0 15.523 0 10 4.477 0 10 0zm0 18c-4.418 0-8-3.582-8-8 0-4.967 3.617-8.993 8-9.833V8.667c-4.383.84-8 4.866-8 9.833 0 4.418 3.582 8 8 8z"/><path d="M6.5 6.5A3.5 3.5 0 0 1 10 10a3.5 3.5 0 0 1 3.5-3.5z"/></svg>
+                                </span>
+                                <span class="provider-logo-label">GoTo</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="column is-4">
