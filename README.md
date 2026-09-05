@@ -12,7 +12,7 @@ One script tag before `</body>`:
 
 ```html
 <script src="phonelayer.js"
-        data-phonelayer-color="#e03616"
+        data-phonelayer-color="#7c5cff"
         data-phonelayer-theme="dark"></script>
 ```
 
@@ -31,7 +31,7 @@ PhoneLayer supports three interaction paradigms:
 <!-- 3. Granular trigger overrides -->
 <button class="phonelayer-trigger"
         data-phonelayer-to="(555) 123-4567"
-        data-phonelayer-color="#28a745"
+        data-phonelayer-color="#4fd1c5"
         data-phonelayer-theme="light">Call Sales</button>
 ```
 

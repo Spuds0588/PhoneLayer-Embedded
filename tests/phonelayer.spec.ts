@@ -82,7 +82,7 @@ test("script-level theming applies the dark theme by default", async ({ page }) 
   const primary = await page.evaluate(
     () => getComputedStyle(document.querySelector(".pl-modal")!).getPropertyValue("--pl-primary").trim()
   );
-  expect(primary).toBe("#f2a33c");
+  expect(primary).toBe("#7c5cff");
 });
 
 test("web providers route via a centered popup", async ({ page }) => {

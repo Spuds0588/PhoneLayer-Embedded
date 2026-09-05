@@ -1,317 +1,510 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PhoneLayer Embedded — Phone links that behave</title>
-  <meta name="description" content="A zero-dependency drop-in library that upgrades tel: and sms: links on desktop with a styled, brandable provider picker." />
-  <style>
-    :root {
-      --ink: #0b0e12;
-      --ink-2: #10141a;
-      --panel: #141a21;
-      --panel-2: #1a212b;
-      --line: #242d38;
-      --text: #e8edf2;
-      --muted: #8b96a3;
-      --accent: #f2a33c;
-      --accent-2: #ffd08a;
-      --teal: #4fd1c5;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background:
-        radial-gradient(900px 420px at 15% -10%, rgba(242, 163, 60, .14), transparent 60%),
-        radial-gradient(800px 400px at 90% -5%, rgba(79, 209, 197, .1), transparent 55%),
-        var(--ink);
-      color: var(--text);
-      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneLayer Embedded - Native Calling &amp; SMS in 1 Line of Code</title>
+    <meta name="description" content="Upgrade your website's phone experience. Intercept tel: and sms: links and launch the visitor's preferred VoIP provider — app or web — with just one line of code.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+    <style>
+        :root {
+            /* PhoneLayer extension palette, violet shifted to its own shade */
+            --primary: #7c5cff;
+            --primary-dark: #6a45f0;
+            --primary-dim: rgba(124, 92, 255, 0.1);
+            --black: #0a0a0a;
+            --pure-black: #000000;
+            --dark-grey: #111111;
+            --white: #ffffff;
+            --text-main: #f3f4f6;
+            --text-dim: #9ca3af;
+        }
 
-    /* Nav */
-    nav {
-      display: flex; align-items: center; gap: 24px;
-      padding: 18px 24px; position: sticky; top: 0; z-index: 10;
-      background: rgba(11, 14, 18, .82); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; letter-spacing: -.01em; }
-    .brand-mark {
-      width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--accent), #d97f1a); color: #1a1206; font-size: 16px;
-    }
-    .brand span b { color: var(--accent); }
-    .nav-links { display: flex; gap: 18px; margin-left: auto; }
-    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 600; }
-    .nav-links a:hover { color: var(--text); text-decoration: none; }
-    .version {
-      font-size: 12px; font-weight: 700; color: var(--accent); border: 1px solid rgba(242, 163, 60, .4);
-      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
-    }
+        html { scroll-behavior: smooth; background-color: var(--pure-black); }
+        body { 
+            background-color: transparent; 
+            color: var(--text-main); 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    /* Hero */
-    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 84px 24px 72px; }
-    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 56px; } .mock { display: none; } }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--accent);
-      border: 1px solid rgba(242, 163, 60, .35); border-radius: 999px; padding: 5px 12px; margin-bottom: 20px;
-      background: rgba(242, 163, 60, .08);
-    }
-    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-    h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.08; margin: 0 0 18px; letter-spacing: -.025em; }
-    h1 em { font-style: normal; color: var(--accent); }
-    .lede { color: var(--muted); font-size: 18px; max-width: 34em; margin: 0 0 30px; }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px; font: inherit; font-weight: 700; cursor: pointer;
-      border-radius: 12px; padding: 12px 22px; border: 1px solid transparent; text-decoration: none !important;
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent-2), var(--accent)); color: #201503; box-shadow: 0 8px 24px rgba(242, 163, 60, .28); }
-    .btn-ghost { border-color: var(--line); color: var(--text); background: var(--panel); }
-    .btn-ghost:hover { border-color: var(--accent); }
-    .fine { font-size: 13px; color: var(--muted); margin-top: 14px; }
+        /* --- Background Animation: Floating Handsets --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(10, 10, 12, 0.9) 100%);
+        }
 
-    /* Mock modal (static preview) */
-    .mock {
-      border: 1px solid var(--line); border-radius: 18px; padding: 22px;
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
-      position: relative;
-    }
-    .mock::before {
-      content: ""; position: absolute; inset: -40px; z-index: -1;
-      background: radial-gradient(300px 200px at 50% 40%, rgba(242, 163, 60, .18), transparent 70%);
-    }
-    .mock-title { font-weight: 800; font-size: 17px; margin-bottom: 2px; }
-    .mock-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
-    .mock-search {
-      width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; margin-bottom: 14px;
-      background: var(--ink-2); color: var(--text); font: inherit; outline: none;
-    }
-    .mock-row {
-      display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px;
-      border: 1px solid transparent; font-size: 14px; font-weight: 600;
-    }
-    .mock-row.sel { border-color: rgba(242, 163, 60, .5); background: rgba(242, 163, 60, .08); }
-    .mock-badge { margin-left: auto; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; border-radius: 999px; padding: 2px 8px; }
-    .b-app { color: var(--accent); background: rgba(242, 163, 60, .14); }
-    .b-web { color: var(--muted); background: var(--ink-2); }
-    .mock-hint { margin-left: 8px; font-size: 11.5px; color: var(--muted); font-weight: 500; }
-    .mock-note { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+        .bg-gradient-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(124, 92, 255, 0.14) 0%, transparent 50%),
+                        radial-gradient(ellipse at 100% 100%, rgba(106, 69, 240, 0.08) 0%, transparent 50%);
+        }
 
-    /* Sections */
-    section { padding: 72px 24px; }
-    .sec-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
-    .sec-head h2 { font-size: clamp(26px, 3.6vw, 38px); margin: 0 0 10px; letter-spacing: -.02em; }
-    .sec-head p { color: var(--muted); margin: 0; font-size: 16px; }
-    .kicker { color: var(--accent); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+        .bg-wrap {
+            perspective: 1000px;
+            perspective-origin: 50% 50%;
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
 
-    /* Playground */
-    .playground { background: var(--ink-2); border-block: 1px solid var(--line); }
-    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
-    .demo-card {
-      border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel);
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .demo-card code { font-size: 12px; color: var(--muted); background: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; overflow-wrap: anywhere; }
-    .demo-card .btn { justify-content: center; width: 100%; }
-    .demo-card .btn-tel { background: var(--panel-2); border-color: var(--line); color: var(--text); }
-    .demo-card .btn-tel:hover { border-color: var(--accent); }
-    .btn-teal { background: linear-gradient(135deg, #7ee8dc, var(--teal)); color: #06231f; box-shadow: 0 8px 24px rgba(79, 209, 197, .22); }
-    .btn-reset { background: transparent; border-color: var(--line); color: var(--muted); font-size: 13px; }
+        .floating-svg {
+            position: absolute;
+            bottom: -200px;
+            transform-style: preserve-3d;
+            transition: opacity 1s;
+            fill: var(--primary);
+            stroke: none;
+            opacity: 0.3;
+        }
 
-    /* Provider grid */
-    .prov-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
-    .prov-card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel); display: flex; align-items: center; gap: 12px; }
-    .prov-icon { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; font-size: 19px; background: var(--panel-2); border: 1px solid var(--line); flex: none; }
-    .prov-name { font-weight: 700; font-size: 15px; }
-    .prov-meta { font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
-    .pill { font-size: 10.5px; font-weight: 800; letter-spacing: .05em; border-radius: 999px; padding: 2px 8px; }
-    .pill-app { color: var(--accent); background: rgba(242, 163, 60, .14); }
-    .pill-web { color: var(--teal); background: rgba(79, 209, 197, .12); }
-    .pill-sms { color: var(--muted); border: 1px solid var(--line); }
+        @keyframes float-up {
+            from {
+                bottom: -200px;
+                transform: translateX(0) rotate(0deg);
+            }
+            to {
+                bottom: 120vh;
+                transform: translateX(var(--drift)) rotate(var(--rotation));
+            }
+        }
 
-    /* Steps */
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-    .step { border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: var(--panel); position: relative; }
-    .step-num {
-      width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 14px;
-      background: linear-gradient(135deg, var(--accent-2), var(--accent)); color: #201503; margin-bottom: 14px;
-    }
-    .step h3 { margin: 0 0 6px; font-size: 17px; }
-    .step p { margin: 0; color: var(--muted); font-size: 14.5px; }
+        /* --- Layout & Sections --- */
+        .section { padding: 8rem 2rem; }
+        .container { max-width: 1100px !important; }
 
-    /* Integration */
-    pre {
-      background: #0d1117; border: 1px solid var(--line); border-radius: 14px; padding: 20px; overflow-x: auto;
-      font: 13.5px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #d7e0ea; margin: 0;
-    }
-    pre .c { color: #64707d; }
-    pre .t { color: #f2a33c; }
-    pre .s { color: #7ee8dc; }
-    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 860px) { .code-grid { grid-template-columns: 1fr; } }
-    .code-cap { font-size: 13px; color: var(--muted); margin-top: 10px; }
+        .hero { 
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
 
-    footer { border-top: 1px solid var(--line); padding: 34px 24px; color: var(--muted); font-size: 13.5px; }
-    footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  </style>
+        .hero .title { 
+            color: var(--white); 
+            font-weight: 900; 
+            font-size: 4.5rem;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .hero .subtitle { 
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 1.5rem auto 2.5rem !important;
+        }
+
+        .has-text-pl { color: var(--primary); }
+
+        .tag.is-pl {
+            background: var(--primary-dim);
+            color: #c9bbff;
+            border: 1px solid rgba(124, 92, 255, 0.45);
+            font-weight: 600;
+        }
+
+        /* --- Code Block --- */
+        .code-box {
+            background: rgba(17, 17, 17, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 1.05rem;
+            color: #cdc0ff;
+            position: relative;
+            max-width: 760px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .code-box code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            font: inherit;
+        }
+
+        .code-box::before {
+            content: "phonelayer.js";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-dim);
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+
+        /* --- Box Styles (extension surface treatment) --- */
+        .box.is-standard,
+        .box.is-demo { 
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .box.is-standard { 
+            padding: 3rem;
+            height: 100%;
+        }
+
+        .box.is-standard:hover,
+        .box.is-demo:hover { 
+            transform: translateY(-8px);
+            border-color: rgba(124, 92, 255, 0.5);
+        }
+
+        .feature-icon { 
+            font-size: 2.5rem; 
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* --- Buttons --- */
+        .button.is-primary { 
+            background: var(--primary); 
+            font-weight: 700;
+            padding: 1.5rem 2.5rem;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(124, 92, 255, 0.25);
+        }
+
+        .button.is-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .button.is-dark {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .button.is-dark:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .btn-pl {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 999px;
+            padding: 0.8rem 1.6rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-pl:hover { background: var(--primary-dark); color: var(--white); transform: translateY(-1px); }
+
+        .btn-pl-ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: var(--white);
+        }
+
+        .btn-pl-ghost:hover { border-color: var(--primary); background: rgba(255, 255, 255, 0.06); color: var(--white); }
+
+        .btn-pl-teal {
+            background: #4fd1c5;
+            color: #06231f;
+        }
+
+        .btn-pl-teal:hover { background: #3ec3b7; color: #06231f; }
+
+        .box.is-demo { padding: 2rem 1.5rem; height: 100%; }
+        .demo-hint { font-family: 'Fira Code', monospace; font-size: 0.78rem; color: #64748b; word-break: break-all; }
+
+        footer { 
+            background-color: var(--black) !important;
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+        }
+
+        footer a { color: var(--text-dim); }
+        footer a:hover { color: white; }
+
+        .code-sample { color: #a5b4fc; }
+        .code-comment { color: #64748b; }
+
+        @media (max-width: 768px) {
+            .hero .title { font-size: 2.5rem; }
+            .hero .subtitle { font-size: 1.15rem; }
+        }
+    </style>
 </head>
 <body>
-  <nav>
-    <div class="brand"><span class="brand-mark">☎</span><span>Phone<b>Layer</b> Embedded</span></div>
-    <div class="nav-links">
-      <a href="#demo">Demo</a>
-      <a href="#providers">Providers</a>
-      <a href="#integration">Integration</a>
-      <span class="version">v1.0.0</span>
+    <div id="bg-canvas">
+        <div class="bg-gradient-overlay"></div>
+        <div class="bg-wrap" id="floating-container"></div>
     </div>
-  </nav>
 
-  <header class="hero wrap">
-    <div>
-      <span class="eyebrow">Zero-dependency · Vanilla JS · Drop-in script tag</span>
-      <h1>Phone links shouldn't open <em>FaceTime.</em></h1>
-      <p class="lede">
-        PhoneLayer Embedded intercepts every <code>tel:</code> and <code>sms:</code> click on desktop and lets
-        your visitors route the call or text to the tool they actually use — WhatsApp, Google Voice, Zoom Phone,
-        Skype and more. App or Web. Remembered or not.
-      </p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#demo">Try the live demo ↓</a>
-        <a class="btn btn-ghost" href="tel:+15551234567">☎ Call the demo line</a>
-        <a class="btn btn-ghost" href="sms:+15551234567?body=Hi%20PhoneLayer!">✉ Text the demo line</a>
-      </div>
-      <p class="fine">The two buttons above are plain <code>&lt;a href="tel:…"&gt;</code> links — PhoneLayer is already intercepting them.</p>
-    </div>
-    <div class="mock" aria-hidden="true">
-      <div class="mock-title">Call +1 555 123 4567</div>
-      <div class="mock-sub">Route to a call provider — sanitized to +15551234567</div>
-      <div class="mock-search">Search providers…</div>
-      <div class="mock-row"><span>💬</span> WhatsApp <span class="mock-badge b-app">App</span><span class="mock-hint">Launches desktop app</span></div>
-      <div class="mock-row"><span>🌐</span> Google Voice <span class="mock-badge b-web">Web</span><span class="mock-hint">May require sign-in</span></div>
-      <div class="mock-row sel"><span>🟢</span> Zoom Phone <span class="mock-badge b-app">App</span><span class="mock-hint">Launches desktop app</span></div>
-      <div class="mock-row"><span>💬</span> WhatsApp <span class="mock-badge b-web">Web</span><span class="mock-hint">May require sign-in</span></div>
-      <div class="mock-note"><input type="checkbox" checked disabled /> Remember my choice</div>
-    </div>
-  </header>
+    <nav style="position: absolute; top: 2.5rem; left: 2.5rem; z-index: 100;">
+        <a href="https://github.com/Spuds0588/PhoneLayer-Embedded" target="_blank" class="has-text-grey-light is-size-6" style="display: inline-flex; align-items: center; text-decoration: none;">
+            <i class="fab fa-github mr-2"></i> GitHub
+        </a>
+    </nav>
 
-  <section class="playground" id="demo">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Live playground</div>
-        <h2>Four ways to trigger it</h2>
-        <p>Auto-intercepted links, declarative triggers, per-trigger theming — click every card.</p>
-      </div>
-      <div class="demo-grid">
-        <div class="demo-card">
-          <code>&lt;a href="tel:+15551234567"&gt;Call Support&lt;/a&gt;</code>
-          <a class="btn btn-tel" href="tel:+15551234567">📞 Call Support</a>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="tag is-pl is-rounded mb-5">Open Source — Drop-in Call &amp; SMS Script</div>
+                <h1 class="title">
+                    Native calling &amp; texting. <br><span class="has-text-pl">1 line of code.</span>
+                </h1>
+                <h2 class="subtitle">
+                    Upgrade your website's phone experience. Intercept standard <code>tel:</code> and <code>sms:</code> links and route calls and texts to WhatsApp, Google Voice, Zoom Phone, RingCentral, and more — instead of dead-ending in FaceTime or Windows Phone Link.
+                </h2>
+                
+                <div class="code-box mb-6">
+                    <button class="copy-btn" onclick="copyCode()">Copy</button>
+                    <code id="install-code">&lt;script src="https://spuds0588.github.io/PhoneLayer-Embedded/phonelayer.js"&gt;&lt;/script&gt;</code>
+                </div>
+
+                <div class="mt-6 buttons is-centered">
+                    <a href="https://github.com/Spuds0588/PhoneLayer-Embedded#readme" target="_blank" class="button is-primary is-large is-rounded px-6" style="min-width: 260px; border-radius: 100px;">Read the Docs</a>
+                    <a href="#demo" class="button is-dark is-large is-rounded px-6" style="min-width: 260px; border-radius: 100px;">Try the Live Demo</a>
+                </div>
+            </div>
         </div>
-        <div class="demo-card">
-          <code>&lt;a href="sms:+15551234567?body=Need%20help"&gt;Text Support&lt;/a&gt;</code>
-          <a class="btn btn-tel" href="sms:+15551234567?body=Need%20help">✉️ Text Support</a>
-        </div>
-        <div class="demo-card">
-          <code>&lt;button class="phonelayer-trigger" data-phonelayer-to="+15551234567"&gt;…&lt;/button&gt;</code>
-          <button class="btn btn-tel phonelayer-trigger" data-phonelayer-to="+15551234567">🚀 Declarative trigger</button>
-        </div>
-        <div class="demo-card">
-          <code>&lt;button data-phonelayer-to="(555) 123-4567" data-phonelayer-color="#4fd1c5" data-phonelayer-theme="light"&gt;…&lt;/button&gt;</code>
-          <button class="btn btn-teal phonelayer-trigger" data-phonelayer-to="(555) 123-4567" data-phonelayer-color="#4fd1c5" data-phonelayer-theme="light">🎨 Custom-themed trigger</button>
-        </div>
-      </div>
-      <div style="text-align:center; margin-top: 22px;">
-        <button class="btn btn-reset" id="pl-reset">Reset remembered choice (window.PhoneLayer.reset())</button>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="providers">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Provider matrix</div>
-        <h2>Tier 1 providers, App &amp; Web</h2>
-        <p>App routes launch the native desktop app via OS URI schemes; Web routes open a centered popup so visitors never lose their place.</p>
-      </div>
-      <div class="prov-grid">
-        <div class="prov-card"><div class="prov-icon">📱</div><div><div class="prov-name">OS Default</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">💬</div><div><div class="prov-name">WhatsApp</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-web">Web</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">🌐</div><div><div class="prov-name">Google Voice</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">🟢</div><div><div class="prov-name">Zoom Phone</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">🔵</div><div><div class="prov-name">RingCentral</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">🎧</div><div><div class="prov-name">Dialpad</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">Call</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">🗨️</div><div><div class="prov-name">Skype</div><div class="prov-meta"><span class="pill pill-app">App</span><span class="pill pill-sms">Call + SMS</span></div></div></div>
-        <div class="prov-card"><div class="prov-icon">📨</div><div><div class="prov-name">TextMagic</div><div class="prov-meta"><span class="pill pill-web">Web</span><span class="pill pill-sms">SMS</span></div></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section style="background: var(--ink-2); border-block: 1px solid var(--line);">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">How it works</div>
-        <h2>Intercept. Choose. Route.</h2>
-      </div>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><h3>Intercept</h3><p>A single delegated listener captures every click on <code>tel:</code>/<code>sms:</code> links and <code>.phonelayer-trigger</code> elements — no per-link wiring.</p></div>
-        <div class="step"><div class="step-num">2</div><h3>Sanitize &amp; choose</h3><p>Numbers are stripped to digits (leading <code>+</code> kept) before they hit a strict URI handler. Visitors pick from a searchable, themed provider list.</p></div>
-        <div class="step"><div class="step-num">3</div><h3>Route</h3><p>App providers launch via OS URI schemes; Web providers open a centered 600×700 popup. Mobile devices are bypassed entirely — native wins there.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="integration">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Integration</div>
-        <h2>Drop it in. Done.</h2>
-        <p>One script tag before <code>&lt;/body&gt;</code>. Theme via attributes on the script or per trigger.</p>
-      </div>
-      <div class="code-grid">
-        <div>
-          <pre><span class="c">&lt;!-- before &lt;/body&gt; --&gt;</span>
-<span class="t">&lt;script</span> src=<span class="s">"phonelayer.js"</span>
-        data-phonelayer-color=<span class="s">"#f2a33c"</span>
-        data-phonelayer-theme=<span class="s">"dark"</span><span class="t">&gt;</span><span class="t">&lt;/script&gt;</span></pre>
-          <div class="code-cap">Global theme — applies to every modal, including your brand color.</div>
+    <section id="features" class="section">
+        <div class="container">
+            <div class="columns is-multiline">
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="title is-4 has-text-white">Zero Setup</h3>
+                        <p class="has-text-white">No backend required. No VoIP credentials or server API keys to configure. Drop the script onto your page and start intercepting <code>tel:</code> and <code>sms:</code> links immediately.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-phone-alt"></i></div>
+                        <h3 class="title is-4 has-text-white">Instant Routing</h3>
+                        <p class="has-text-white">Native desktop apps launch via OS URI schemes; web apps open a clean, centered popup window — visitors route the call or text in one click and never lose their place.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                        <h3 class="title is-4 has-text-white">Provider Choice</h3>
+                        <p class="has-text-white">Choose between OS Default, WhatsApp, Google Voice, Zoom Phone, RingCentral, Dialpad, Skype, and TextMagic — set globally or per link using simple data attributes.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3 class="title is-4 has-text-white">Remember My Choice</h3>
+                        <p class="has-text-white">Visitors can save their preferred provider on the device — later clicks route straight through, no modal, no friction. Reset it anytime with a single API call.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="title is-4 has-text-white">Sanitized &amp; Mobile-Safe</h3>
+                        <p class="has-text-white">Messy numbers like <code>(555) 123-4567</code> are stripped to clean digits before execution, and the library disables itself on mobile — native OS dialing wins there.</p>
+                    </div>
+                </div>
+                <div class="column is-4">
+                    <div class="box is-standard">
+                        <div class="feature-icon"><i class="fas fa-code"></i></div>
+                        <h3 class="title is-4 has-text-white">Open Source</h3>
+                        <p class="has-text-white">Built with transparency and privacy in mind. Zero dependencies, one global (<code>window.PhoneLayer</code>), and fully free to use in your personal or commercial projects.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-          <pre><span class="c">&lt;!-- per-trigger override --&gt;</span>
-<span class="t">&lt;button</span> class=<span class="s">"phonelayer-trigger"</span>
-        data-phonelayer-to=<span class="s">"(555) 123-4567"</span>
-        data-phonelayer-color=<span class="s">"#4fd1c5"</span>
-        data-phonelayer-theme=<span class="s">"light"</span><span class="t">&gt;</span>
-  Call Sales
-<span class="t">&lt;/button&gt;</span></pre>
-          <div class="code-cap">Granular overrides — that's the teal button in the playground above.</div>
+    </section>
+
+    <section id="demo" class="section" style="background: rgba(255, 255, 255, 0.015); border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+        <div class="container">
+            <div class="has-text-centered mb-6">
+                <h2 class="title is-2 has-text-white">Live Demo</h2>
+                <p class="subtitle is-6">Every button below is live — PhoneLayer is already intercepting these triggers.</p>
+            </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-6">
+                    <div class="box is-demo has-text-centered">
+                        <p class="demo-hint mb-4">&lt;a href="tel:+15551234567"&gt;</p>
+                        <a class="btn-pl" href="tel:+15551234567"><i class="fas fa-phone-alt mr-1"></i> Call Support</a>
+                        <p class="has-text-grey-light is-size-7 mt-3" style="margin-bottom: 0;">Auto-intercepted tel: link — opens the provider picker.</p>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="box is-demo has-text-centered">
+                        <p class="demo-hint mb-4">&lt;a href="sms:+15551234567?body=Need%20help"&gt;</p>
+                        <a class="btn-pl btn-pl-ghost" href="sms:+15551234567?body=Need%20help"><i class="fas fa-comment-alt mr-1"></i> Text Support</a>
+                        <p class="has-text-grey-light is-size-7 mt-3" style="margin-bottom: 0;">SMS body payload (&quot;Need help&quot;) is carried through to the provider.</p>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="box is-demo has-text-centered">
+                        <p class="demo-hint mb-4">&lt;button class="phonelayer-trigger" data-phonelayer-to="+15551234567"&gt;</p>
+                        <button class="btn-pl btn-pl-ghost phonelayer-trigger" data-phonelayer-to="+15551234567"><i class="fas fa-phone-volume mr-1"></i> Declarative Trigger</button>
+                        <p class="has-text-grey-light is-size-7 mt-3" style="margin-bottom: 0;">Any element becomes a call trigger with one attribute.</p>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="box is-demo has-text-centered">
+                        <p class="demo-hint mb-4">data-phonelayer-to="(555) 123-4567" + color/theme</p>
+                        <button class="btn-pl btn-pl-teal phonelayer-trigger" data-phonelayer-to="(555) 123-4567" data-phonelayer-color="#4fd1c5" data-phonelayer-theme="light"><i class="fas fa-palette mr-1"></i> Call Sales (Messy Number)</button>
+                        <p class="has-text-grey-light is-size-7 mt-3" style="margin-bottom: 0;">Sanitized to 5551234567 and themed per-trigger — try a light, teal modal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="has-text-centered mt-6">
+                <button class="btn-pl btn-pl-ghost is-size-7" id="pl-reset" style="padding: 0.6rem 1.2rem;">Reset remembered choice (window.PhoneLayer.reset())</button>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    <div class="wrap">
-      <span>PhoneLayer Embedded v1.0.0 — zero-dependency, MIT-style. One global: <code>window.PhoneLayer</code>.</span>
-      <span>Desktop only · Mobile bypasses to native handling</span>
-    </div>
-  </footer>
+    <section class="section">
+        <div class="container has-text-centered">
+            <h2 class="title is-2 has-text-white">Usage Example</h2>
+            <div class="box" style="background: #1a1a1a; text-align: left; max-width: 800px; margin: 0 auto; border: 1px solid #333;">
+                <pre style="background: transparent; color: #fff; font-family: 'Fira Code', 'Courier New', monospace;"><code><span class="code-comment">&lt;!-- Intercept standard links --&gt;</span>
+<span class="code-sample">&lt;a href="tel:+15551234567"&gt;Call Support&lt;/a&gt;</span>
+<span class="code-sample">&lt;a href="sms:+15551234567?body=Need%20help"&gt;Text Support&lt;/a&gt;</span>
 
-  <script>
-    document.getElementById("pl-reset").addEventListener("click", function () {
-      if (window.PhoneLayer) window.PhoneLayer.reset();
-      var b = this;
-      b.textContent = "Preference cleared ✓";
-      setTimeout(function () { b.textContent = "Reset remembered choice (window.PhoneLayer.reset())"; }, 1600);
-    });
-  </script>
-  <script src="phonelayer.js" data-phonelayer-color="#f2a33c" data-phonelayer-theme="dark"></script>
+<span class="code-comment">&lt;!-- Or use declarative triggers with per-trigger theming --&gt;</span>
+<span class="code-sample">&lt;button class="phonelayer-trigger" 
+        data-phonelayer-to="(555) 123-4567"
+        data-phonelayer-color="4fd1c5"
+        data-phonelayer-theme="light"&gt;
+    Call Sales
+&lt;/button&gt;</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container has-text-centered">
+            <p class="mb-4">⚡ Built by <a href="https://github.com/Spuds0588" target="_blank">Spuds0588</a></p>
+            <div class="links mb-5">
+                <a href="https://github.com/Spuds0588/PhoneLayer-Embedded" class="mx-3">GitHub</a>
+                <a href="#demo" class="mx-3">Live Demo</a>
+                <a href="https://github.com/Spuds0588/PhoneLayer" class="mx-3">Main Extension</a>
+            </div>
+            
+            <button class="phonelayer-trigger button is-dark is-small is-rounded" 
+                    data-phonelayer-to="+15551234567">
+                <i class="fas fa-phone-alt mr-2"></i> Call the Demo Line
+            </button>
+
+            <p class="mt-6 is-size-7">&copy; 2026 PhoneLayer Embedded. MIT License.</p>
+        </div>
+    </footer>
+
+    <!-- Include the library we're showcasing -->
+    <script src="phonelayer.js" data-phonelayer-color="#7c5cff" data-phonelayer-theme="dark"></script>
+
+    <script>
+        // Floating SVG Animation
+        const container = document.getElementById('floating-container');
+        const svgPath = "M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.8-20.9-18.6-23.4z";
+
+        const count = 14;
+
+        for (let i = 1; i <= count; i++) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 512 512");
+            svg.setAttribute("width", "80");
+            svg.setAttribute("height", "80");
+            svg.classList.add("floating-svg");
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", svgPath);
+            svg.appendChild(path);
+
+            // Randomize depth properties (1 to 10)
+            const depth = Math.random() * 10;
+            const scale = 0.5 + (depth * 0.25); // Bigger if "closer" (higher depth)
+            const blur = Math.max(0, depth - 7); // Blurrier if "closer"
+            const duration = 25 + (Math.random() * 30);
+            const delay = Math.random() * -50;
+
+            svg.style.left = `${Math.random() * 110 - 5}%`;
+            svg.style.setProperty('--drift', `${Math.random() * 500 - 250}px`);
+            svg.style.setProperty('--rotation', `${Math.random() * 720 - 360}deg`);
+            svg.style.filter = `blur(${blur}px)`;
+            svg.style.transform = `scale(${scale}) rotate(${Math.random() * 360}deg)`;
+            svg.style.zIndex = Math.floor(depth);
+            svg.style.opacity = 0.1 + (depth * 0.04);
+
+            // Set style to fill for handset (Violet)
+            svg.style.fill = "var(--primary)";
+            svg.style.stroke = "none";
+
+            svg.style.animation = `float-up ${duration}s linear infinite`;
+            svg.style.animationDelay = `${delay}s`;
+
+            container.appendChild(svg);
+        }
+
+        function copyCode() {
+            const code = document.getElementById('install-code').innerText;
+            navigator.clipboard.writeText(code);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = 'Copied!';
+            setTimeout(() => btn.innerText = 'Copy', 2000);
+        }
+
+        document.getElementById('pl-reset').addEventListener('click', function () {
+            if (window.PhoneLayer) window.PhoneLayer.reset();
+            const b = this;
+            b.textContent = 'Preference cleared ✓';
+            setTimeout(() => b.textContent = 'Reset remembered choice (window.PhoneLayer.reset())', 1600);
+        });
+    </script>
 </body>
 </html>
