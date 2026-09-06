@@ -229,36 +229,48 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 60%, transparent 90%);
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 10px;
+            backdrop-filter: blur(2px);
             transition: background 0.2s, border-color 0.2s;
         }
 
         .pl-tile:hover {
-            background: rgba(124, 92, 255, 0.14);
-            border-color: rgba(124, 92, 255, 0.5);
+            background: rgba(124, 92, 255, 0.16);
+            border-color: rgba(124, 92, 255, 0.55);
+        }
+
+        .pl-tile img,
+        .pl-tile .pl-tile-ico {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .pl-tile img {
             display: block;
             height: 20px;
             width: auto;
-            max-width: 46px;
+            max-width: 48px;
             object-fit: contain;
+            filter: contrast(1.1) brightness(0.98);
         }
 
+        /* Boost contrast for dark or low-detail logos on small tiles */
+        .pl-tile img.light { filter: brightness(0.94) contrast(1.15); }
+        .pl-tile img.pill-c { filter: contrast(1.25) saturate(1.08); }
+
         .pl-tile .pl-tile-ico {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
-            font-size: 18px;
+            color: #eaf0ff;
+            font-size: 19px;
         }
 
         @media (max-width: 768px) {
-            .pl-tile { width: 54px; height: 40px; }
-            .pl-tile img { height: 17px; max-width: 38px; }
+            .pl-tile { width: 56px; height: 42px; }
+            .pl-tile img { height: 18px; max-width: 40px; }
+            .pl-tile .pl-tile-ico { font-size: 17px; }
         }
 
         /* --- Buttons --- */
@@ -414,7 +426,7 @@
                 </div>
                 <div class="column is-4">
                     <div class="box is-standard">
-                        <div class="feature-icon"><i class="fas fa-image"></i></div>
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
                         <h3 class="title is-4 has-text-white">40 Providers</h3>
                         <p class="has-text-grey-light is-size-7 mb-4">Every provider PhoneLayer routes to — click any logo to open the picker.</p>
                         <div class="pl-carousel" id="pl-carousel">
@@ -534,10 +546,10 @@
                                     <img src="assets/infobip.svg" alt="" loading="lazy">
                                 </a>
                                 <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="ClickSend — Web SMS" aria-label="ClickSend">
-                                    <img src="assets/clicksend.svg" alt="" loading="lazy">
+                                    <img class="pill-c" src="assets/clicksend.svg" alt="" loading="lazy">
                                 </a>
                                 <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Podium — Web SMS" aria-label="Podium">
-                                    <img src="assets/podium.jpg" alt="" loading="lazy">
+                                    <img class="light" src="assets/podium.jpg" alt="" loading="lazy">
                                 </a>
                             </div>
                         </div>
