@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.8.0
+ * PhoneLayer Embedded v1.9.0
  * Zero-dependency drop-in library that upgrades tel: and sms: links on
  * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
@@ -358,6 +358,60 @@
         return "https://app.toky.co";
       },
     },
+    {
+      id: "sonetel",
+      name: "Sonetel",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.sonetel.com";
+      },
+    },
+    {
+      id: "onsip",
+      name: "OnSIP",
+      kind: "web",
+      types: ["call"],
+      build: function () {
+        return "https://www.onsip.com/uc";
+      },
+    },
+    {
+      id: "plivo",
+      name: "Plivo",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://console.plivo.com";
+      },
+    },
+    {
+      id: "infobip",
+      name: "Infobip",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://portal.infobip.com";
+      },
+    },
+    {
+      id: "clicksend",
+      name: "ClickSend",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://dashboard.clicksend.com";
+      },
+    },
+    {
+      id: "podium",
+      name: "Podium",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://app.podium.com";
+      },
+    },
   ];
 
   /* ------------------------------------------------------------------ *
@@ -646,7 +700,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.8.0",
+    version: "1.9.0",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);

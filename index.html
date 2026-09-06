@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhoneLayer Embedded - Native Calling &amp; SMS in 1 Line of Code</title>
-    <meta name="description" content="One line of code routes every call and text to 34+ VoIP and SMS providers — app or web, with the visitor's choice remembered.">
+    <meta name="description" content="One line of code routes every call and text to 40 VoIP and SMS providers — app or web, with the visitor's choice remembered.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
     <style>
@@ -199,76 +199,66 @@
             color: var(--primary);
         }
 
-        /* --- Provider Gallery --- */
-        .provider-gallery {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+        /* --- Provider Carousel: single row, icon-only, auto-rotating --- */
+        .pl-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
         }
 
-        .provider-logo {
+        .pl-track {
             display: flex;
-            flex-direction: column;
+            gap: 8px;
+            width: max-content;
+            animation: pl-marquee 55s linear infinite;
+        }
+
+        .pl-carousel:hover .pl-track { animation-play-state: paused; }
+
+        @keyframes pl-marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-50% - 4px)); }
+        }
+
+        .pl-tile {
+            flex: none;
+            width: 64px;
+            height: 44px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 12px 8px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.78rem;
-            font-weight: 600;
-            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            border-radius: 10px;
+            transition: background 0.2s, border-color 0.2s;
         }
 
-        .provider-logo .provider-logo-label {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px 7px;
-            border-radius: 6px;
-            font-family: 'Inter', -apple-system, sans-serif;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 88px;
+        .pl-tile:hover {
+            background: rgba(124, 92, 255, 0.14);
+            border-color: rgba(124, 92, 255, 0.5);
         }
 
-        .provider-logo img.provider-logo-ico {
-            flex: none;
+        .pl-tile img {
             display: block;
-            height: 22px;
+            height: 20px;
             width: auto;
-            max-width: 92%;
+            max-width: 46px;
             object-fit: contain;
-            margin: 0 auto;
         }
 
-        .provider-logo .provider-logo-ico {
-            flex: none;
+        .pl-tile .pl-tile-ico {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 22px;
-            height: 22px;
             color: var(--text-dim);
-        }
-
-        .provider-logo .provider-logo-ico i {
-            font-size: 20px;
-            line-height: 1;
-        }
-
-        .provider-logo:hover {
-            background: rgba(124, 92, 255, 0.12);
-            border-color: rgba(124, 92, 255, 0.5);
-            transform: translateY(-2px);
+            font-size: 18px;
         }
 
         @media (max-width: 768px) {
-            .provider-logo img.provider-logo-ico {
-                height: 18px;
-            }
+            .pl-tile { width: 54px; height: 40px; }
+            .pl-tile img { height: 17px; max-width: 38px; }
         }
 
         /* --- Buttons --- */
@@ -353,18 +343,6 @@
         @media (max-width: 768px) {
             .section { padding: 4.5rem 1.25rem; }
             .box.is-standard { padding: 2rem 1.5rem; }
-            .provider-gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
-            }
-            .provider-logo {
-                padding: 10px 10px;
-                font-size: 0.72rem;
-            }
-            .provider-logo .provider-logo-label {
-                max-width: 90px;
-                padding: 3px 6px;
-            }
             .hero { flex-direction: column; justify-content: center; }
             .hero .hero-body { width: 100%; padding: 6rem 0 4rem; }
             .hero .title { font-size: 2.6rem; }
@@ -400,13 +378,14 @@
                     Calls &amp; texts, <br><span class="has-text-pl">seamless in any app.</span>
                 </h1>
                 <h2 class="subtitle">
-                    One line of code. Every <code>tel:</code> and <code>sms:</code> link becomes a choice — route calls and texts to 34+ VoIP &amp; SMS providers, app or web, with the visitor's pick remembered.
+                    One line of code. Every <code>tel:</code> and <code>sms:</code> link becomes a choice — route calls and texts to 40 VoIP &amp; SMS providers, app or web, with the visitor's pick remembered.
                 </h2>
                 
                 <div class="code-box mb-6">
                     <button class="copy-btn" onclick="copyCode()">Copy</button>
-                    <code id="install-code">&lt;script src="https://spuds0588.github.io/PhoneLayer-Embedded/phonelayer.js"&gt;&lt;/script&gt;</code>
+                    <code id="install-code">&lt;script src="https://cdn.jsdelivr.net/gh/Spuds0588/PhoneLayer-Embedded@main/phonelayer.js"&gt;&lt;/script&gt;</code>
                 </div>
+                <p class="has-text-grey-light is-size-7" style="margin-top: -1.25rem;">Also served from GitHub Pages: <code>spuds0588.github.io/PhoneLayer-Embedded/phonelayer.js</code></p>
 
                 <div class="mt-6 buttons is-centered">
                     <a href="https://github.com/Spuds0588/PhoneLayer-Embedded#readme" target="_blank" class="button is-primary is-large is-rounded px-6" style="min-width: 260px; border-radius: 100px;">Read the Docs</a>
@@ -436,179 +415,131 @@
                 <div class="column is-4">
                     <div class="box is-standard">
                         <div class="feature-icon"><i class="fas fa-image"></i></div>
-                        <h3 class="title is-4 has-text-white">Provider Gallery</h3>
-                        <p class="has-text-grey-light is-size-7 mb-4">Every provider PhoneLayer routes to — tap any logo to see the library in action.</p>
-                        <div class="provider-gallery">
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="OS Default — system dialer / messager">
-                                <span class="provider-logo-ico"><i class="fas fa-phone-alt" aria-hidden="true"></i></span>
-                                <span class="provider-logo-label">OS Default</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="WhatsApp — App &amp; Web">
-                                <img class="provider-logo-ico" src="assets/whatsapp.svg" alt="WhatsApp logo" loading="lazy">
-                                <span class="provider-logo-label">WhatsApp</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Google Voice — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/google-voice.svg" alt="Google Voice logo" loading="lazy">
-                                <span class="provider-logo-label">Google Voice</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Zoom Phone — App calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/zoom.svg" alt="Zoom Phone logo" loading="lazy">
-                                <span class="provider-logo-label">Zoom Phone</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="RingCentral — App calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/ringcentral.svg" alt="RingCentral logo" loading="lazy">
-                                <span class="provider-logo-label">RingCentral</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Microsoft Teams — Web PSTN calls">
-                                <img class="provider-logo-ico" src="assets/teams.svg" alt="Microsoft Teams logo" loading="lazy">
-                                <span class="provider-logo-label">Teams</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Cisco Webex — App calls">
-                                <img class="provider-logo-ico" src="assets/webex.svg" alt="Cisco Webex logo" loading="lazy">
-                                <span class="provider-logo-label">Webex</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Dialpad — Web calls">
-                                <img class="provider-logo-ico" src="assets/dialpad.svg" alt="Dialpad logo" loading="lazy">
-                                <span class="provider-logo-label">Dialpad</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Skype — App calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/skype.svg" alt="Skype logo" loading="lazy">
-                                <span class="provider-logo-label">Skype</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="TextMagic — Web SMS">
-                                <img class="provider-logo-ico" src="assets/textmagic.png" alt="TextMagic logo" loading="lazy">
-                                <span class="provider-logo-label">TextMagic</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="OpenPhone — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/openphone.svg" alt="OpenPhone logo" loading="lazy">
-                                <span class="provider-logo-label">OpenPhone</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Aircall — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/aircall.svg" alt="Aircall logo" loading="lazy">
-                                <span class="provider-logo-label">Aircall</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="8x8 — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/8x8.svg" alt="8x8 logo" loading="lazy">
-                                <span class="provider-logo-label">8x8</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="GoTo Connect — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/goto.svg" alt="GoTo logo" loading="lazy">
-                                <span class="provider-logo-label">GoTo</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Vonage — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/vonage.svg" alt="Vonage logo" loading="lazy">
-                                <span class="provider-logo-label">Vonage</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Nextiva — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/nextiva.svg" alt="Nextiva logo" loading="lazy">
-                                <span class="provider-logo-label">Nextiva</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Ooma — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/ooma.svg" alt="Ooma logo" loading="lazy">
-                                <span class="provider-logo-label">Ooma</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Telegram — App messaging">
-                                <img class="provider-logo-ico" src="assets/telegram.svg" alt="Telegram logo" loading="lazy">
-                                <span class="provider-logo-label">Telegram</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Signal — App messaging">
-                                <img class="provider-logo-ico" src="assets/signal.svg" alt="Signal logo" loading="lazy">
-                                <span class="provider-logo-label">Signal</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Viber — App messaging">
-                                <img class="provider-logo-ico" src="assets/viber.svg" alt="Viber logo" loading="lazy">
-                                <span class="provider-logo-label">Viber</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Five9 — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/five9.svg" alt="Five9 logo" loading="lazy">
-                                <span class="provider-logo-label">Five9</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Genesys Cloud — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/genesys.svg" alt="Genesys Cloud logo" loading="lazy">
-                                <span class="provider-logo-label">Genesys</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Zoho Voice — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/zoho.svg" alt="Zoho Voice logo" loading="lazy">
-                                <span class="provider-logo-label">Zoho Voice</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="JustCall — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/justcall.svg" alt="JustCall logo" loading="lazy">
-                                <span class="provider-logo-label">JustCall</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Telnyx — Web SMS">
-                                <img class="provider-logo-ico" src="assets/telnyx.svg" alt="Telnyx logo" loading="lazy">
-                                <span class="provider-logo-label">Telnyx</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Sinch — Web SMS">
-                                <img class="provider-logo-ico" src="assets/sinch.svg" alt="Sinch logo" loading="lazy">
-                                <span class="provider-logo-label">Sinch</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Google Messages — Web SMS">
-                                <img class="provider-logo-ico" src="assets/google-messages.svg" alt="Google Messages logo" loading="lazy">
-                                <span class="provider-logo-label">Messages</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Twilio — Web SMS">
-                                <img class="provider-logo-ico" src="assets/twilio.svg" alt="Twilio logo" loading="lazy">
-                                <span class="provider-logo-label">Twilio</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="TextNow — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/textnow.png" alt="TextNow logo" loading="lazy">
-                                <span class="provider-logo-label">TextNow</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="CallRail — Web SMS">
-                                <img class="provider-logo-ico" src="assets/callrail.png" alt="CallRail logo" loading="lazy">
-                                <span class="provider-logo-label">CallRail</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="SimpleTexting — Web SMS">
-                                <img class="provider-logo-ico" src="assets/simpletexting.png" alt="SimpleTexting logo" loading="lazy">
-                                <span class="provider-logo-label">SimpleTexting</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Heymarket — Web SMS">
-                                <img class="provider-logo-ico" src="assets/heymarket.png" alt="Heymarket logo" loading="lazy">
-                                <span class="provider-logo-label">Heymarket</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Kixie — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/kixie.png" alt="Kixie logo" loading="lazy">
-                                <span class="provider-logo-label">Kixie</span>
-                            </a>
-                            <a class="provider-logo" href="#" data-phonelayer-to="+15551234567"
-                               title="Toky — Web calls &amp; SMS">
-                                <img class="provider-logo-ico" src="assets/toky.png" alt="Toky logo" loading="lazy">
-                                <span class="provider-logo-label">Toky</span>
-                            </a>
+                        <h3 class="title is-4 has-text-white">40 Providers</h3>
+                        <p class="has-text-grey-light is-size-7 mb-4">Every provider PhoneLayer routes to — click any logo to open the picker.</p>
+                        <div class="pl-carousel" id="pl-carousel">
+                            <div class="pl-track" id="pl-track">
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="OS Default — system dialer / messager" aria-label="OS Default">
+                                    <span class="pl-tile-ico"><i class="fas fa-phone-alt" aria-hidden="true"></i></span>
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="WhatsApp — App &amp; Web" aria-label="WhatsApp">
+                                    <img src="assets/whatsapp.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Google Voice — Web calls &amp; SMS" aria-label="Google Voice">
+                                    <img src="assets/google-voice.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Zoom Phone — App calls &amp; SMS" aria-label="Zoom Phone">
+                                    <img src="assets/zoom.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="RingCentral — App calls &amp; SMS" aria-label="RingCentral">
+                                    <img src="assets/ringcentral.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Microsoft Teams — Web PSTN calls" aria-label="Microsoft Teams">
+                                    <img src="assets/teams.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Cisco Webex — App calls" aria-label="Cisco Webex">
+                                    <img src="assets/webex.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Dialpad — Web calls" aria-label="Dialpad">
+                                    <img src="assets/dialpad.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Skype — App calls &amp; SMS" aria-label="Skype">
+                                    <img src="assets/skype.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="TextMagic — Web SMS" aria-label="TextMagic">
+                                    <img src="assets/textmagic.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="OpenPhone — Web calls &amp; SMS" aria-label="OpenPhone">
+                                    <img src="assets/openphone.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Aircall — Web calls &amp; SMS" aria-label="Aircall">
+                                    <img src="assets/aircall.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="8x8 — Web calls &amp; SMS" aria-label="8x8">
+                                    <img src="assets/8x8.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="GoTo Connect — Web calls &amp; SMS" aria-label="GoTo Connect">
+                                    <img src="assets/goto.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Vonage — Web calls &amp; SMS" aria-label="Vonage">
+                                    <img src="assets/vonage.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Nextiva — Web calls &amp; SMS" aria-label="Nextiva">
+                                    <img src="assets/nextiva.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Ooma — Web calls &amp; SMS" aria-label="Ooma">
+                                    <img src="assets/ooma.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Telegram — App messaging" aria-label="Telegram">
+                                    <img src="assets/telegram.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Signal — App messaging" aria-label="Signal">
+                                    <img src="assets/signal.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Viber — App messaging" aria-label="Viber">
+                                    <img src="assets/viber.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Five9 — Web calls &amp; SMS" aria-label="Five9">
+                                    <img src="assets/five9.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Genesys Cloud — Web calls &amp; SMS" aria-label="Genesys Cloud">
+                                    <img src="assets/genesys.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Zoho Voice — Web calls &amp; SMS" aria-label="Zoho Voice">
+                                    <img src="assets/zoho.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="JustCall — Web calls &amp; SMS" aria-label="JustCall">
+                                    <img src="assets/justcall.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Telnyx — Web SMS" aria-label="Telnyx">
+                                    <img src="assets/telnyx.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Sinch — Web SMS" aria-label="Sinch">
+                                    <img src="assets/sinch.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Google Messages — Web SMS" aria-label="Google Messages">
+                                    <img src="assets/google-messages.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Twilio — Web SMS" aria-label="Twilio">
+                                    <img src="assets/twilio.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="TextNow — Web calls &amp; SMS" aria-label="TextNow">
+                                    <img src="assets/textnow.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="CallRail — Web SMS" aria-label="CallRail">
+                                    <img src="assets/callrail.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="SimpleTexting — Web SMS" aria-label="SimpleTexting">
+                                    <img src="assets/simpletexting.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Heymarket — Web SMS" aria-label="Heymarket">
+                                    <img src="assets/heymarket.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Kixie — Web calls &amp; SMS" aria-label="Kixie">
+                                    <img src="assets/kixie.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Toky — Web calls &amp; SMS" aria-label="Toky">
+                                    <img src="assets/toky.png" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Sonetel — Web calls &amp; SMS" aria-label="Sonetel">
+                                    <img src="assets/sonetel.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="OnSIP — Web calls" aria-label="OnSIP">
+                                    <img src="assets/onsip.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Plivo — Web SMS" aria-label="Plivo">
+                                    <img src="assets/plivo.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Infobip — Web SMS" aria-label="Infobip">
+                                    <img src="assets/infobip.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="ClickSend — Web SMS" aria-label="ClickSend">
+                                    <img src="assets/clicksend.svg" alt="" loading="lazy">
+                                </a>
+                                <a class="pl-tile" href="#" data-phonelayer-to="+15551234567" title="Podium — Web SMS" aria-label="Podium">
+                                    <img src="assets/podium.jpg" alt="" loading="lazy">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -771,6 +702,19 @@
             btn.innerText = 'Copied!';
             setTimeout(() => btn.innerText = 'Copy', 2000);
         }
+
+        // Provider carousel: duplicate tiles once for a seamless -50% marquee loop.
+        (function () {
+            const track = document.getElementById('pl-track');
+            if (!track) return;
+            track.innerHTML += track.innerHTML;
+            [...track.children].forEach((tile, i) => {
+                if (i >= track.children.length / 2) {
+                    tile.setAttribute('aria-hidden', 'true');
+                    tile.setAttribute('tabindex', '-1');
+                }
+            });
+        })();
 
         document.getElementById('pl-reset').addEventListener('click', function () {
             if (window.PhoneLayer) window.PhoneLayer.reset();

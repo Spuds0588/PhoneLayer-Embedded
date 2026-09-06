@@ -8,13 +8,23 @@ A zero-dependency, drop-in JavaScript library that upgrades the desktop browser 
 
 ## Install
 
-One script tag before `</body>`:
+One script tag before `</body>`, served from jsDelivr:
 
 ```html
-<script src="phonelayer.js"
+<script src="https://cdn.jsdelivr.net/gh/Spuds0588/PhoneLayer-Embedded@main/phonelayer.js"
         data-phonelayer-color="#7c5cff"
         data-phonelayer-theme="dark"></script>
 ```
+
+The same file is also served directly from GitHub Pages:
+
+```html
+<script src="https://spuds0588.github.io/PhoneLayer-Embedded/phonelayer.js"
+        data-phonelayer-color="#7c5cff"
+        data-phonelayer-theme="dark"></script>
+```
+
+Pinned versions are available on jsDelivr too — swap `@main` for a release tag (e.g. `@v1.9.0`) to lock your install to that release.
 
 ## Usage
 
@@ -35,16 +45,58 @@ PhoneLayer supports three interaction paradigms:
         data-phonelayer-theme="light">Call Sales</button>
 ```
 
-## Features (v1.8)
+## Supported providers (v1.9)
+
+**40 providers.** "Desktop" launches the provider's native app via an OS URI scheme; "Web" opens a centered popup to the provider's web app (may require sign-in).
+
+| Provider | Calls | SMS | Routing |
+| --- | :-: | :-: | --- |
+| OS Default | ✓ | ✓ | System handler (`tel:` / `sms:`) |
+| WhatsApp | ✓ | ✓ | Desktop app + Web |
+| Google Voice | ✓ | ✓ | Web |
+| Zoom Phone | ✓ | ✓ | Desktop app |
+| RingCentral | ✓ | ✓ | Desktop app |
+| Dialpad | ✓ | — | Web |
+| Skype | ✓ | ✓ | Desktop app |
+| TextMagic | — | ✓ | Web |
+| Microsoft Teams | ✓ | — | Web |
+| Cisco Webex | ✓ | — | Desktop app |
+| OpenPhone | ✓ | ✓ | Web |
+| Aircall | ✓ | ✓ | Web |
+| 8x8 | ✓ | ✓ | Web |
+| GoTo Connect | ✓ | ✓ | Web |
+| Vonage | ✓ | ✓ | Web |
+| Nextiva | ✓ | ✓ | Web |
+| Ooma | ✓ | ✓ | Web |
+| Telegram | — | ✓ | Desktop app |
+| Signal | — | ✓ | Desktop app |
+| Viber | — | ✓ | Desktop app |
+| Five9 | ✓ | ✓ | Web |
+| Genesys Cloud | ✓ | ✓ | Web |
+| Zoho Voice | ✓ | ✓ | Web |
+| JustCall | ✓ | ✓ | Web |
+| Telnyx | — | ✓ | Web |
+| Sinch | — | ✓ | Web |
+| Google Messages | — | ✓ | Web |
+| Twilio | — | ✓ | Web |
+| TextNow | ✓ | ✓ | Web |
+| CallRail | — | ✓ | Web |
+| SimpleTexting | — | ✓ | Web |
+| Heymarket | — | ✓ | Web |
+| Kixie | ✓ | ✓ | Web |
+| Toky | ✓ | ✓ | Web |
+| Sonetel | ✓ | ✓ | Web |
+| OnSIP | ✓ | — | Web |
+| Plivo | — | ✓ | Web |
+| Infobip | — | ✓ | Web |
+| ClickSend | — | ✓ | Web |
+| Podium | — | ✓ | Web |
+
+## Features
 
 - **Auto-interception** of `tel:` / `sms:` links via event delegation.
 - **Declarative triggers** (`.phonelayer-trigger` + `data-phonelayer-to`).
 - **Mobile fallback** — real `tel:`/`sms:` links keep native OS dialing; declarative triggers fall back to `tel:`/`sms:`.
-- **Provider matrix (Tier 1)**: OS Default, WhatsApp (App + Web), Google Voice (Web), Zoom Phone (App), RingCentral (App), Dialpad (Web), Skype (App), TextMagic (Web).
-- **Provider matrix (Tier 2)**: Microsoft Teams (Web — PSTN deep link), Cisco Webex (App — `webextel://`), OpenPhone (Web), Aircall (Web), 8x8 (Web), GoTo Connect (Web).
-- **Provider matrix (Tier 3)**: Vonage (Web), Nextiva (Web), Ooma (Web), Telegram (App — `tg://resolve?phone=`), Signal (App — `sgnl://`), Viber (App — `viber://chat`).
-- **Provider matrix (Tier 4)**: Five9 (Web), Genesys Cloud (Web), Zoho Voice (Web), JustCall (Web), Telnyx (Web SMS), Sinch (Web SMS).
-- **Provider matrix (Tier 5)**: Google Messages (Web SMS), Twilio (Web SMS), TextNow (Web), CallRail (Web SMS), SimpleTexting (Web SMS), Heymarket (Web SMS), Kixie (Web), Toky (Web).
 - **App vs Web routing** — apps launch via OS URI schemes (`window.location.href`); web apps open a centered 600×700 popup (`window.open`).
 - **Web-app warnings** — Web providers are badged `[Web]` and hint that sign-in may be required.
 - **"Remember my choice"** — persists the selected provider per type (`call`/`sms`) in `localStorage`; subsequent clicks route directly.
@@ -72,11 +124,3 @@ python3 -m http.server 4173   # http://localhost:4173
 ## No build step
 
 This repository intentionally ships zero build tooling and zero runtime dependencies. The whole site is static — `index.html` plus `phonelayer.js` — so what you clone is exactly what GitHub Pages serves. (The Playwright/Chromium suite used during development lives outside the repo.)
-
-## Out of scope (v1.5)
-
-- Iframe embedding (VoIP providers set strict `X-Frame-Options` — web dialing uses a popup).
-- Auth-state detection (impossible under browser CORS/sandboxing).
-- Plaintext phone-number scanning (false positives / performance).
-
-See `PRD-PhoneLayer_Embedded.md` for the full roadmap (Remaining: E.164 country-code padding, config dashboard, NPM package).
