@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.9.0
+ * PhoneLayer Embedded v1.9.1
  * Zero-dependency drop-in library that upgrades tel: and sms: links on
  * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
@@ -48,6 +48,24 @@
       types: ["call", "sms"],
       build: function (n, t, b) {
         return t === "sms" ? "sms:" + n + (b ? "?body=" + encodeURIComponent(b) : "") : "tel:" + n;
+      },
+    },
+    {
+      id: "facetime",
+      name: "FaceTime",
+      kind: "app",
+      types: ["call"],
+      build: function (n) {
+        return "facetime://" + n;
+      },
+    },
+    {
+      id: "microsoft-phone",
+      name: "Microsoft Phone Link",
+      kind: "app",
+      types: ["call", "sms"],
+      build: function (n, t) {
+        return t === "sms" ? "ms-phone://send?number=" + n : "ms-phone://call?number=" + n;
       },
     },
     {
@@ -412,6 +430,60 @@
         return "https://app.podium.com";
       },
     },
+    {
+      id: "google-messages-app",
+      name: "Google Messages",
+      kind: "app",
+      types: ["sms"],
+      build: function (n, t, b) {
+        return "google-messages://send?phone=" + n + (t === "sms" && b ? "&body=" + encodeURIComponent(b) : "");
+      },
+    },
+    {
+      id: "discord",
+      name: "Discord",
+      kind: "app",
+      types: ["call", "sms"],
+      build: function (n, t) {
+        return t === "sms" ? "discord://smessage?number=" + n : "discord://call?number=" + n;
+      },
+    },
+    {
+      id: "facebook-messenger",
+      name: "Messenger",
+      kind: "app",
+      types: ["call", "sms"],
+      build: function (n, t) {
+        return t === "sms" ? "fb-messenger://send?phone=" + n : "fb-messenger://call?phone=" + n;
+      },
+    },
+    {
+      id: "microsoft-teams-app",
+      name: "Microsoft Teams",
+      kind: "app",
+      types: ["call"],
+      build: function (n) {
+        return "msteams://l/call/0/0?users=4:" + n;
+      },
+    },
+    {
+      id: "slack",
+      name: "Slack",
+      kind: "app",
+      types: ["call"],
+      build: function (n) {
+        return "slack://call?number=" + n;
+      },
+    },
+    {
+      id: "webex-app",
+      name: "Cisco Webex",
+      kind: "app",
+      types: ["call"],
+      build: function (n) {
+        return "webex://call?number=" + n;
+      },
+    },
   ];
 
   /* ------------------------------------------------------------------ *
@@ -700,7 +772,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.9.0",
+    version: "1.9.1",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);

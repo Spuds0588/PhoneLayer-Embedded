@@ -45,7 +45,7 @@ PhoneLayer supports three interaction paradigms:
         data-phonelayer-theme="light">Call Sales</button>
 ```
 
-## Supported providers (v1.9)
+## Supported providers (v1.9.1)
 
 **40 providers.** "Desktop" launches the provider's native app via an OS URI scheme; "Web" opens a centered popup to the provider's web app (may require sign-in).
 
@@ -91,6 +91,14 @@ PhoneLayer supports three interaction paradigms:
 | Infobip | — | ✓ | Web |
 | ClickSend | — | ✓ | Web |
 | Podium | — | ✓ | Web |
+| FaceTime | ✓ | — | Desktop app |
+| Microsoft Phone Link | ✓ | ✓ | Desktop app |
+| Google Messages | ✓ | ✓ | Desktop app + Web |
+| Discord | ✓ | ✓ | Desktop app |
+| Messenger | ✓ | ✓ | Desktop app |
+| Microsoft Teams | ✓ | ✓ | Desktop app + Web |
+| Slack | ✓ | — | Desktop app |
+| Cisco Webex | ✓ | ✓ | Desktop app + Web |
 
 ## Features
 
