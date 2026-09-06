@@ -1,0 +1,9 @@
+{
+  "name": "phonelayer-embedded",
+  "version": "1.9.1",
+  "private": true,
+  "description": "PhoneLayer Embedded — zero-dependency drop-in call & SMS provider picker (static demo site). No dependencies; start is a built-in Node static server.",
+  "scripts": {
+    "start": "node serve.js"
+  }
+}

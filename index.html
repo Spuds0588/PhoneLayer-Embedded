@@ -122,11 +122,63 @@
 
         .hero .buttons { margin-top: 0; }
 
+        /* --- Hero flow demo (animated) --- */
+        .pl-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin: 3.25rem auto 0;
+            max-width: 860px;
+        }
+
+        .pl-flow-step {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.65rem 1.1rem;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            font-weight: 600;
+            animation: pl-flow-glow 4.8s ease-in-out infinite;
+        }
+
+        .pl-flow-ico { color: var(--primary); font-size: 0.9rem; }
+
+        .pl-flow-arrow { color: rgba(255, 255, 255, 0.25); font-size: 0.8rem; animation: pl-flow-arrow-glow 4.8s ease-in-out infinite; }
+
+        .st-2 { animation-delay: 1.6s; }
+        .st-3 { animation-delay: 3.2s; }
+        .a-1 { animation-delay: 0.8s; }
+        .a-2 { animation-delay: 2.4s; }
+
+        @keyframes pl-flow-glow {
+            0%, 26%, 100% { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); color: var(--text-dim); box-shadow: none; }
+            8%, 18% { border-color: rgba(124, 92, 255, 0.8); background: rgba(124, 92, 255, 0.12); color: #fff; box-shadow: 0 0 18px rgba(124, 92, 255, 0.3); }
+        }
+
+        @keyframes pl-flow-arrow-glow {
+            0%, 22%, 100% { color: rgba(255, 255, 255, 0.25); }
+            10%, 16% { color: var(--primary); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pl-flow-step, .pl-flow-arrow { animation: none; }
+        }
+
+        .hero + .section { padding-top: 5.5rem; }
+
         @media (max-width: 768px) {
             .hero { min-height: auto; padding: 0; }
             .hero .title { font-size: 2rem; }
             .hero .subtitle { font-size: 1rem; margin: 0.5rem auto 0.85rem !important; }
             .section { padding: 4rem 1rem; }
+            .pl-flow { gap: 0.5rem; margin-top: 2rem; }
+            .pl-flow-step { font-size: 0.78rem; padding: 0.5rem 0.8rem; }
         }
 
         .has-text-pl { color: var(--primary); }
@@ -424,6 +476,14 @@
                 <div class="mt-6 buttons is-centered">
                     <a href="https://github.com/Spuds0588/PhoneLayer-Embedded#readme" target="_blank" class="button is-primary is-large is-rounded px-6" style="min-width: 260px; border-radius: 100px;">Read the Docs</a>
                     <a href="#demo" class="button is-dark is-large is-rounded px-6" style="min-width: 260px; border-radius: 100px;">Try the Live Demo</a>
+                </div>
+
+                <div class="pl-flow" aria-hidden="true">
+                    <div class="pl-flow-step st-1"><span class="pl-flow-ico"><i class="fas fa-mouse-pointer"></i></span><span>tel: / sms: clicked</span></div>
+                    <div class="pl-flow-arrow a-1"><i class="fas fa-chevron-right"></i></div>
+                    <div class="pl-flow-step st-2"><span class="pl-flow-ico"><i class="fas fa-th"></i></span><span>pick a provider</span></div>
+                    <div class="pl-flow-arrow a-2"><i class="fas fa-chevron-right"></i></div>
+                    <div class="pl-flow-step st-3"><span class="pl-flow-ico"><i class="fas fa-phone-volume"></i></span><span>routed to app or web</span></div>
                 </div>
             </div>
         </div>

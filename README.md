@@ -126,9 +126,10 @@ Live demo hosted on GitHub Pages: **https://spuds0588.github.io/PhoneLayer-Embed
 Local preview needs no dependencies — serve the repo with any static file server:
 
 ```sh
-python3 -m http.server 4173   # http://localhost:4173
+npm start                            # built-in Node server (zero deps) on http://localhost:4173
+python3 -m http.server 4173          # any static server works too
 ```
 
 ## No build step
 
-This repository intentionally ships zero build tooling and zero runtime dependencies. The whole site is static — `index.html` plus `phonelayer.js` — so what you clone is exactly what GitHub Pages serves. (The Playwright/Chromium suite used during development lives outside the repo.)
+This repository intentionally ships zero build tooling and zero runtime dependencies. The whole site is static — `index.html` plus `phonelayer.js` — so what you clone is exactly what GitHub Pages serves. (`serve.js` is a zero-dependency dev server used by `npm start` for local preview; the Playwright/Chromium visual-check harness lives in gitignored `.devtools/`.)
