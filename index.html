@@ -87,7 +87,9 @@
         .container { max-width: 1100px !important; }
 
         .hero { 
-            min-height: 90vh;
+            min-height: 88vh;
+            padding: 0 0 0 1.25rem;
+            margin: 0 -1.25rem;
             display: flex;
             align-items: center;
         }
@@ -95,16 +97,27 @@
         .hero .title { 
             color: var(--white); 
             font-weight: 900; 
-            font-size: 4.5rem;
+            font-size: 4.2rem;
             letter-spacing: -0.04em;
             line-height: 1;
         }
 
         .hero .subtitle { 
             color: var(--text-dim);
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             max-width: 800px;
-            margin: 1.5rem auto 2.5rem !important;
+            margin: 1.1rem auto 1.75rem !important;
+            padding: 0 1.25rem;
+        }
+
+        .hero .buttons { margin-top: 0.25rem; }
+
+        @media (max-width: 768px) {
+            .hero { padding: 0; margin: 0; min-height: auto; }
+            .hero .title { font-size: 2.2rem; }
+            .hero .subtitle { font-size: 1.05rem; margin: 0.75rem auto 1rem !important; }
+            .section { padding: 4.5rem 1.1rem; }
+            .container { padding: 0; }
         }
 
         .has-text-pl { color: var(--primary); }
