@@ -116,3 +116,8 @@ This ensures elements like `(555) 123-4567` are compiled to `5551234567`, protec
 - [x] Map SMS gateway portals (Telnyx, Sinch) — web routes (`portal.telnyx.com`, `dashboard.sinch.com`).
 - [ ] Build a lightweight hosted config dashboard (Optional): Allow users to generate their script tags visually, mirroring MailLayer's go-to-market strategy.
 - [ ] Package as an NPM module (`npm i @phonelayer/embedded`) for React/Next.js native implementations alongside the CDN script.
+
+### Phase 5: Consumer Messengers & SMS Platforms (V1.8) - *Completed*
+- [x] Map consumer/web messaging (Google Messages for Web, TextNow) — web routes (`messages.google.com/web`, `www.textnow.com`).
+- [x] Map SMS platforms (Twilio, CallRail, SimpleTexting, Heymarket) — web routes (`console.twilio.com`, `app.callrail.com`, `app.simpletexting.com`, `app.heymarket.com`).
+- [x] Map sales dialers (Kixie, Toky) — web routes (`app.kixie.com`, `app.toky.co`).

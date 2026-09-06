@@ -1,5 +1,5 @@
 /*!
- * PhoneLayer Embedded v1.7.0
+ * PhoneLayer Embedded v1.8.0
  * Zero-dependency drop-in library that upgrades tel: and sms: links on
  * desktop, and falls back to native OS dialing on mobile.
  * Docs: see PRD-PhoneLayer_Embedded.md and the index.html demo.
@@ -284,6 +284,78 @@
       types: ["sms"],
       build: function () {
         return "https://dashboard.sinch.com";
+      },
+    },
+    {
+      id: "google-messages",
+      name: "Google Messages",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://messages.google.com/web";
+      },
+    },
+    {
+      id: "twilio",
+      name: "Twilio",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://console.twilio.com";
+      },
+    },
+    {
+      id: "textnow",
+      name: "TextNow",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://www.textnow.com";
+      },
+    },
+    {
+      id: "callrail",
+      name: "CallRail",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://app.callrail.com";
+      },
+    },
+    {
+      id: "simpletexting",
+      name: "SimpleTexting",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://app.simpletexting.com";
+      },
+    },
+    {
+      id: "heymarket",
+      name: "Heymarket",
+      kind: "web",
+      types: ["sms"],
+      build: function () {
+        return "https://app.heymarket.com";
+      },
+    },
+    {
+      id: "kixie",
+      name: "Kixie",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.kixie.com";
+      },
+    },
+    {
+      id: "toky",
+      name: "Toky",
+      kind: "web",
+      types: ["call", "sms"],
+      build: function () {
+        return "https://app.toky.co";
       },
     },
   ];
@@ -574,7 +646,7 @@
    * Public API — one global, for debugging / preference reset.          *
    * ------------------------------------------------------------------ */
   window.PhoneLayer = {
-    version: "1.7.0",
+    version: "1.8.0",
     reset: function () {
       try {
         localStorage.removeItem(STORAGE_KEY);
