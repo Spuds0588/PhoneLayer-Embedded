@@ -99,7 +99,7 @@
         .container { max-width: 1100px !important; }
 
         .hero { 
-            min-height: 74vh;
+            min-height: min(74vh, 720px); /* capped so tall viewports don't leave a dead gap before content */
             padding: 0 2rem;
             display: flex;
             align-items: center;
